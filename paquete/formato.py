@@ -1,3 +1,8 @@
+from paquete.validaciones import limpiar_texto, leer_entero_validado, convertir_a_minuscula
+from paquete import estadistica
+from paquete.validaciones import es_par_recursivo, es_primo_recursivo, es_multiplo_recursivo
+
+
 def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
     columnas = tabla_dict['columnas']
     matriz = tabla_dict['matriz']
@@ -49,3 +54,102 @@ def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
             linea_fila += texto + (" " * espacios) + "|"
         print(linea_fila)
     print("-" * len(linea_encabezado))
+
+
+from paquete.validaciones import (
+    limpiar_texto, 
+    leer_entero_validado, 
+    convertir_a_minuscula,
+    es_par_recursivo, 
+    es_primo_recursivo, 
+    es_multiplo_recursivo
+)
+from paquete import estadistica
+
+def separar_por_comas(texto: str) -> list:
+    lista, acumulador = [], ""
+    for i in range(len(texto)):
+        if texto[i] == ",":
+            if len(limpiar_texto(acumulador)) > 0: lista.append(limpiar_texto(acumulador))
+            acumulador = ""
+        else: acumulador += texto[i]
+    if len(limpiar_texto(acumulador)) > 0: lista.append(limpiar_texto(acumulador))
+    return lista
+
+def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
+    if nombre_proyecto not in proyectos: 
+        proyectos[nombre_proyecto] = {}
+    print("\n1. Crear Tabla\n2. Modificar Tabla")
+    opc = input("Opción: ")
+    
+    if opc == "1":
+        nom_tabla = limpiar_texto(input("Nombre tabla: "))
+        cant_cols = leer_entero_validado("Columnas: ")
+        
+        columnas = []
+        for i in range(cant_cols):
+            col = limpiar_texto(input("Columna " + str(i + 1) + ": "))
+            columnas.append(col)
+            
+        cant_f = leer_entero_validado("Filas: ")
+        
+        matriz = []
+        for f in range(cant_f):
+            fila = []
+            for c in range(len(columnas)):
+                valor_celda = input(columnas[c] + ": ")
+                fila.append(valor_celda)
+            matriz.append(fila)
+            
+        proyectos[nombre_proyecto][nom_tabla] = {'columnas': columnas, 'matriz': matriz}
+        print("¡Creada!")
+        
+    elif opc == "2":
+        nom_tabla = limpiar_texto(input("Nombre tabla a modificar: "))
+        if nom_tabla in proyectos[nombre_proyecto]:
+            tabla = proyectos[nombre_proyecto][nom_tabla]
+            print("1. Agregar fila\n2. Modificar celda")
+            sub_opc = input("Opción: ")
+            
+            if sub_opc == "1":
+                nueva_fila = []
+                for c in range(len(tabla['columnas'])):
+                    valor_col = input(tabla['columnas'][c] + ": ")
+                    nueva_fila.append(valor_col)
+                tabla['matriz'].append(nueva_fila)
+            else:
+                f = leer_entero_validado("Fila: ") - 1
+                c = leer_entero_validado("Col: ") - 1
+                if 0 <= f < len(tabla['matriz']) and 0 <= c < len(tabla['columnas']):
+                    tabla['matriz'][f][c] = input("Nuevo valor: ")
+                else: 
+                    print("Fuera de rango.")
+        else: 
+            print("No existe.")
+
+def ejecutar_estadisticas(nombre_proyecto: str, proyectos: dict):
+    nom_tabla = limpiar_texto(input("Tabla a analizar: "))
+    if nom_tabla in proyectos[nombre_proyecto]:
+        tabla = proyectos[nombre_proyecto][nom_tabla]
+        
+        for i in range(len(tabla['columnas'])): 
+            print(str(i + 1) + ". " + tabla['columnas'][i])
+            
+        col_idx = leer_entero_validado("Seleccione columna: ") - 1
+        
+        if 0 <= col_idx < len(tabla['columnas']):
+            valores = estadistica.obtener_columna_numerica(tabla['matriz'], col_idx)
+            if len(valores) > 0:
+                print("\n--- REPORTE: " + tabla['columnas'][col_idx] + " ---")
+                print("Cant: " + str(len(valores)) + " | Máx: " + str(estadistica.calcular_maximo(valores)) + " | Mín: " + str(estadistica.calcular_minimo(valores)))
+                print("P.Arit: " + str(estadistica.calcular_promedio_aritmetico(valores)) + " | P.Geom: " + str(estadistica.calcular_promedio_geometrico(valores)))
+                print("Var: " + str(estadistica.calcular_varianza(valores)) + " | Desv: " + str(estadistica.calcular_desviacion_estandar(valores)))
+                
+                p_val = int(valores[0])
+                print("Primer valor (" + str(p_val) + ") -> Par: " + str(es_par_recursivo(p_val)) + " | Primo: " + str(es_primo_recursivo(p_val)) + " | Mult 5: " + str(es_multiplo_recursivo(p_val, 5)))
+            else: 
+                print("Sin datos numéricos.")
+        else: 
+            print("Selección inválida.")
+    else: 
+        print("No encontrada.")

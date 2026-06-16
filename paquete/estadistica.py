@@ -1,67 +1,118 @@
-def es_flotante_valido(entrada: str) -> bool:
-    """Verifica si un string se puede convertir a float de forma estructurada."""
+
+def limpiar_texto(texto: str) -> str:
+    resultado_str = texto
+    if len(texto) > 0:
+        inicio = 0
+        fin = len(texto) - 1
+
+        while inicio <= fin and (texto[inicio] == " " or texto[inicio] == "\n"):
+            inicio += 1
+
+        while fin >= inicio and (texto[fin] == " " or texto[fin] == "\n"):
+            fin -= 1
+
+        acumulador = ""
+        for i in range(inicio, fin + 1):
+            acumulador += texto[i]
+        resultado_str = acumulador
+
+    return resultado_str
+
+def convertir_a_minuscula(texto: str) -> str:
+
+    resultado_str = ""
+    for i in range(len(texto)):
+        caracter = texto[i]
+        if "A" <= caracter <= "Z":
+            resultado_str += chr(ord(caracter) + 32)
+        else:
+            resultado_str += caracter
+    return resultado_str
+
+def es_par_recursivo(n: int) -> bool:
+    res = False
+
+    if n == 0:
+        res = True
+    elif n == 1:
+        res = False
+    elif n < 0:
+        res = es_par_recursivo(-n)
+    else:
+        res = es_par_recursivo(n - 2)
+
+    return res
+
+def es_multiplo_recursivo(a: int, b: int) -> bool:
+    res = False
+
+    if b == 0:
+        res = False
+    elif a < 0:
+        res = es_multiplo_recursivo(-a, b if b > 0 else -b)
+    elif b < 0:
+        res = es_multiplo_recursivo(a, -b)
+    elif a == 0:
+        res = True
+    elif a < b:
+        res = False
+    else:
+        res = es_multiplo_recursivo(a - b, b)
+
+    return res
+
+def es_primo_recursivo(n: int, divisor: int = None) -> bool:
+    res = False
+
+    if n <= 1:
+        res = False
+    else:
+        div_actual = divisor
+        if div_actual is None:
+            div_actual = n - 1
+
+        if div_actual == 1:
+            res = True
+        elif es_multiplo_recursivo(n, div_actual):
+            res = False
+        else:
+            res = es_primo_recursivo(n, div_actual - 1)
+
+    return res
+
+def validar_rango_recursivo(valor: float, minimo: float, maximo: float) -> bool:
+    res = True
+    if valor < minimo or valor > maximo:
+        res = False
+    return res
+
+def es_cadena_numerica(entrada: str) -> bool:
+    res = True
+
     if len(entrada) == 0:
-        return False
-    
-    inicio = 0
-    if entrada[0] == '-':
-        inicio = 1
-        
-    puntos = 0
-    for i in range(inicio, len(entrada)):
-        if entrada[i] == '.':
-            puntos += 1
-            if puntos > 1:
-                return False
-        elif entrada[i] < '0' or entrada[i] > '9':
-            return False
-    return True
+        res = False
+    else:
+        inicio = 0
+        if entrada[0] == '-':
+            if len(entrada) == 1:
+                res = False
+            inicio = 1
 
-def obtener_columna_numerica(matriz: list, idx_columna: int) -> list:
-    valores = []
-    for fila in matriz:
-        val_str = str(fila[idx_columna]).strip()
-        if es_flotante_valido(val_str):
-            valores.append(float(val_str))
-    return valores
+        if res:
+            for i in range(inicio, len(entrada)):
+                if entrada[i] < '0' or entrada[i] > '9':
+                    res = False
 
-def calcular_maximo(valores: list) -> float:
-    if len(valores) == 0: return 0.0
-    maxi = valores[0]
-    for v in valores:
-        if v > maxi: maxi = v
-    return maxi
+    return res
 
-def calcular_minimo(valores: list) -> float:
-    if len(valores) == 0: return 0.0
-    mini = valores[0]
-    for v in valores:
-        if v < mini: mini = v
-    return mini
+def leer_entero_validado(mensaje: str) -> int:
+    entrada = limpiar_texto(input(mensaje))
+    res_entero = 0
 
-def calcular_promedio_aritmetico(valores: list) -> float:
-    if len(valores) == 0: return 0.0
-    suma = 0.0
-    for v in valores:
-        suma += v
-    return suma / len(valores)
+    if es_cadena_numerica(entrada):
+        res_entero = int(entrada)
+    else:
+        print("Error: Debe ingresar un número entero válido.")
+        res_entero = leer_entero_validado(mensaje)
 
-def calcular_promedio_geometrico(valores: list) -> float:
-    if len(valores) == 0: return 0.0
-    producto = 1.0
-    for v in valores:
-        if v <= 0:
-            return 0.0
-        producto *= v
-    return producto ** (1 / len(valores))
-
-def calcular_varianza(valores: list) -> float:
-    if len(valores) == 0: return 0.0
-    media = calcular_promedio_aritmetico(valores)
-    suma_cuadrados = 0.0
-    for v in valores:
-        suma_cuadrados += (v - media) ** 2
-    return suma_cuadrados / len(valores)
-
-def calcular_desviacion_estandar(valores: list) -> float:
-    return calcular_varianza(valores) ** 0.5
+    return res_entero
