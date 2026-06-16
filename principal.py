@@ -6,13 +6,13 @@ from paquete.validaciones import (
     es_primo_recursivo, 
     es_multiplo_recursivo, 
     leer_entero_validado,
-    limpiar_texto
-)
-
+    limpiar_texto,      
+    convertir_a_minuscula
+    )
 proyectos = {}
 
 def separar_por_comas(texto: str) -> list:
-    """Función manual alternativa a split() para segmentar columnas a filtrar."""
+    
     lista = []
     acumulador = ""
     for i in range(len(texto)):
@@ -30,7 +30,7 @@ def gestionar_tablas(nombre_proyecto):
     if nombre_proyecto not in proyectos:
         proyectos[nombre_proyecto] = {}
         
-    print("\n--- GESTIÓN DE TABLAR ---")
+    print("\n--- GESTIÓN DE TABLAS ---")
     print("1. Crear Tabla (Carga secuencial)")
     print("2. Modificar Filas/Columnas de Tabla")
     opc = input("Seleccione: ")
@@ -74,7 +74,7 @@ def gestionar_tablas(nombre_proyecto):
             for col in tabla['columnas']:
                 val = input("Valor para " + col + ": ")
                 nueva_fila.append(val)
-                tabla['matriz'].append(nueva_fila)
+            tabla['matriz'].append(nueva_fila)
         elif sub_opc == "2":
             f_idx = leer_entero_validado("Índice de fila: ") - 1
             c_idx = leer_entero_validado("Índice de columna: ") - 1
@@ -120,6 +120,7 @@ def ejecutar_estadisticas(nombre_proyecto):
     print("¿Es primo? " + str(es_primo_recursivo(primer_val)))
     print("¿Es múltiplo de 5? " + str(es_multiplo_recursivo(primer_val, 5)))
 
+
 def programa_principal():
     autenticado = False
     while not autenticado:
@@ -144,7 +145,8 @@ def programa_principal():
         print("e) Estadística")
         print("f) Salir")
         
-        opcion = input("Seleccione opción: ").lower()
+        
+        opcion = convertir_a_minuscula(input("Seleccione opción: "))
         
         if opcion == "a":
             proyecto_activo = limpiar_texto(input("Nombre del proyecto: "))
@@ -159,7 +161,8 @@ def programa_principal():
             nom_tabla = limpiar_texto(input("Nombre de la tabla a visualizar: "))
             if nom_tabla in proyectos[proyecto_activo]:
                 print("¿Desea filtrar columnas? (s/n)")
-                if input().lower() == 's':
+                
+                if convertir_a_minuscula(input()) == 's':
                     cols_str = input("Ingrese nombres de columnas separadas por coma: ")
                     lista_filtros = separar_por_comas(cols_str)
                     mostrar_tabla_prolija(proyectos[proyecto_activo][nom_tabla], lista_filtros)
@@ -167,6 +170,7 @@ def programa_principal():
                     mostrar_tabla_prolija(proyectos[proyecto_activo][nom_tabla])
             else:
                 print("Tabla no encontrada.")
+                
         elif opcion == "e":
             ejecutar_estadisticas(proyecto_activo)
             
