@@ -11,7 +11,6 @@ def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
         if columnas_filtradas is None:
             indices_a_mostrar.append(i)
         else:
-            # Buscamos si la columna actual está en los filtros
             encontrado = False
             for col_filtro in columnas_filtradas:
                 if columnas[i] == col_filtro:
@@ -22,8 +21,7 @@ def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
     if len(indices_a_mostrar) == 0:
         print("No hay columnas seleccionadas para visualizar.")
         return
-
-    # Calcular anchos fijos manualmente
+    
     anchos = []
     for i in range(len(columnas)):
         max_ancho = len(columnas[i])
@@ -33,10 +31,8 @@ def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
                 max_ancho = largo_val
         anchos.append(max_ancho + 2)
 
-    # Imprimir Encabezado
     linea_encabezado = ""
     for idx in indices_a_mostrar:
-        # Relleno manual de espacios a la derecha (ljust casero)
         texto = str(columnas[idx])
         espacios = anchos[idx] - len(texto)
         linea_encabezado += texto + (" " * espacios) + "|"
@@ -45,7 +41,6 @@ def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
     print(linea_encabezado)
     print("-" * len(linea_encabezado))
 
-    # Imprimir Filas
     for fila in matriz:
         linea_fila = ""
         for idx in indices_a_mostrar:
