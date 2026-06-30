@@ -228,7 +228,6 @@ def verificar_columnas(tabla: dict, columna_elegida: str) -> bool:
 
 
 
-########
 def retornar_columna(tabla: list) -> str:   
     ""
     columna = input("Elija columna: ")

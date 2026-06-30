@@ -1,7 +1,7 @@
 from paquete.validacion.validaciones import limpiar_texto, leer_entero_validado, convertir_a_minuscula
 from paquete.estadistica import estadistica
 from paquete.validacion.validaciones import es_par_recursivo, es_primo_recursivo, es_multiplo_recursivo, es_numero
-
+from paquete.tabla import *
 
 def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
     columnas = tabla_dict['columnas']
@@ -79,7 +79,7 @@ def separar_por_comas(texto: str) -> list:
 def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
     if nombre_proyecto not in proyectos: 
         proyectos[nombre_proyecto] = {}
-    print("\n1. Crear Tabla\n2. Modificar Tabla")
+    print("\n1. Crear Tabla\n2. Guardar tabla\n3. Modificar Tabla")
     opc = input("Opción: ")
     
     if opc == "1":
@@ -90,26 +90,57 @@ def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
         else:
             cant_cols = leer_entero_validado("Columnas: ")
         
-        columnas = []
-        for i in range(cant_cols):
-            col = limpiar_texto(input("Nombre Columna " + str(i + 1) + ": "))
-            columnas.append(col)
+            columnas = []
+            for i in range (cant_cols):
+                col = limpiar_texto(input("Nombre Columna " + str(i + 1) + ": "))
+                columnas.append(col)
             
-        cant_f = leer_entero_validado("Filas: ")
+            cant_f = leer_entero_validado("Filas: ")
         
-        matriz = []
-        for f in range(cant_f):
-            fila = []
-            for c in range(len(columnas)):
-                valor_celda = input(f"{columnas[c]}: ") #antes: columnas[c] + ": "
-                valor_celda = es_numero(valor_celda)            #nuevo
-                fila.append(valor_celda)
-            matriz.append(fila)
+            matriz = []
+            for f in range(cant_f):
+                fila = []
+                for c in range(len(columnas)):
+                    valor_celda = input(f"{columnas[c]}: ") #antes: columnas[c] + ": "
+                    valor_celda = es_numero(valor_celda)            #nuevo
+                    fila.append(valor_celda)
+                matriz.append(fila)
             
-        proyectos[nombre_proyecto][nom_tabla] = {'columnas': columnas, 'matriz': matriz}
-        print("¡Creada!")
-        
+            proyectos[nombre_proyecto][nom_tabla] = {'columnas': columnas, 'matriz': matriz}
+            print("¡Creada!")
+    
     elif opc == "2":
+        archivo_csv = open("paquete/archivos/tablas.csv", "w")
+
+        # Recorremos todas las tablas que pertenezcan a el proyecto
+        for nom_tabla in proyectos[nombre_proyecto]:
+            tabla_actual = proyectos[nombre_proyecto][nom_tabla]
+            
+            # Escribimos los encabezados de la tabla
+            linea_columnas = ""
+            for i in range(len(tabla_actual['columnas'])):
+                linea_columnas = linea_columnas + str(tabla_actual['columnas'][i])
+                if i < len(tabla_actual['columnas']) - 1:
+                    linea_columnas = linea_columnas + ","
+            
+            linea_columnas = linea_columnas + "\n"
+            archivo_csv.write(linea_columnas)
+
+            # Escribimos las filas de la matriz 
+            for f in range(len(tabla_actual['matriz'])):
+                linea_fila = ""
+                for c in range(len(tabla_actual['matriz'][f])):
+                    linea_fila = linea_fila + str(tabla_actual['matriz'][f][c])
+                    if c < len(tabla_actual['matriz'][f]) - 1:
+                        linea_fila = linea_fila + ","
+                
+                linea_fila = linea_fila + "\n"
+                archivo_csv.write(linea_fila)
+
+        archivo_csv.close()
+        print("¡Todas las tablas del proyecto fueron guardadas en archivos/tablas.csv!")
+
+    elif opc == "3":
         nom_tabla = limpiar_texto(input("Nombre tabla a modificar: "))
         if nom_tabla in proyectos[nombre_proyecto]:
             tabla = proyectos[nombre_proyecto][nom_tabla]
@@ -131,6 +162,8 @@ def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
                     print("Fuera de rango.")
         else: 
             print("No existe.")
+        
+        
 
 
 def ejecutar_estadisticas(nombre_proyecto: str, proyectos: dict):
