@@ -1,6 +1,6 @@
 from paquete.validacion.validaciones import limpiar_texto, leer_entero_validado, convertir_a_minuscula
 from paquete.estadistica import estadistica
-from paquete.validacion.validaciones import es_par_recursivo, es_primo_recursivo, es_multiplo_recursivo
+from paquete.validacion.validaciones import es_par_recursivo, es_primo_recursivo, es_multiplo_recursivo, es_numero
 
 
 def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
@@ -29,7 +29,7 @@ def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
     
     anchos = []
     for i in range(len(columnas)):
-        max_ancho = len(columnas[i])
+        max_ancho = len(str(columnas[i]))
         for fila in matriz:
             largo_val = len(str(fila[i]))
             if largo_val > max_ancho:
@@ -101,7 +101,8 @@ def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
         for f in range(cant_f):
             fila = []
             for c in range(len(columnas)):
-                valor_celda = input(columnas[c] + ": ")
+                valor_celda = input(f"{columnas[c]}: ") #antes: columnas[c] + ": "
+                valor_celda = es_numero(valor_celda)            #nuevo
                 fila.append(valor_celda)
             matriz.append(fila)
             

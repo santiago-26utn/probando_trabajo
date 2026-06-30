@@ -304,3 +304,25 @@ def transformar_dato(dato_ingresado: any) -> str|float:
         dato_retornar = dato_transformado
 
     return dato_retornar
+
+
+def es_numero(posible_numero: str) -> int | str:
+    ""
+    es_numero = True
+    dato = posible_numero
+    n = len(dato)
+
+    if n == 0:
+        es_numero = False
+
+    for i in dato:
+        if i < "0" or i > "9":
+            es_numero = False
+
+    if es_numero:
+        numero = 0
+        for i in dato:
+            numero = numero * 10 + (ord(i) - ord("0"))
+        dato = numero
+
+    return dato
