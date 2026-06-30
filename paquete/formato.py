@@ -1,6 +1,6 @@
-from paquete.validaciones import limpiar_texto, leer_entero_validado, convertir_a_minuscula
-from paquete import estadistica
-from paquete.validaciones import es_par_recursivo, es_primo_recursivo, es_multiplo_recursivo
+from paquete.validacion.validaciones import limpiar_texto, leer_entero_validado, convertir_a_minuscula
+from paquete.estadistica import estadistica
+from paquete.validacion.validaciones import es_par_recursivo, es_primo_recursivo, es_multiplo_recursivo
 
 
 def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
@@ -56,7 +56,7 @@ def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
     print("-" * len(linea_encabezado))
 
 
-from paquete.validaciones import (
+from paquete.validacion.validaciones import (
     limpiar_texto, 
     leer_entero_validado, 
     convertir_a_minuscula,
@@ -64,7 +64,7 @@ from paquete.validaciones import (
     es_primo_recursivo, 
     es_multiplo_recursivo
 )
-from paquete import estadistica
+from paquete.estadistica import estadistica
 
 def separar_por_comas(texto: str) -> list:
     lista, acumulador = [], ""
@@ -84,11 +84,15 @@ def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
     
     if opc == "1":
         nom_tabla = limpiar_texto(input("Nombre tabla: "))
-        cant_cols = leer_entero_validado("Columnas: ")
+        
+        if nom_tabla in proyectos[nombre_proyecto]:
+            print("❌ La tabla ya existe en este proyecto.")
+        else:
+            cant_cols = leer_entero_validado("Columnas: ")
         
         columnas = []
         for i in range(cant_cols):
-            col = limpiar_texto(input("Columna " + str(i + 1) + ": "))
+            col = limpiar_texto(input("Nombre Columna " + str(i + 1) + ": "))
             columnas.append(col)
             
         cant_f = leer_entero_validado("Filas: ")
@@ -126,6 +130,7 @@ def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
                     print("Fuera de rango.")
         else: 
             print("No existe.")
+
 
 def ejecutar_estadisticas(nombre_proyecto: str, proyectos: dict):
     nom_tabla = limpiar_texto(input("Tabla a analizar: "))

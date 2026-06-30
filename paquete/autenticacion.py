@@ -1,4 +1,4 @@
-from paquete.validaciones import limpiar_texto
+from paquete.validacion.validaciones import limpiar_texto
 
 def separar_linea(cadena: str, separador: str) -> tuple:
 
