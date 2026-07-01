@@ -307,7 +307,7 @@ def mostrar_decil(lista: list, medida: int):
     pos = int(medida * (n + 1) / 10)
     print("D", medida, "=", lista[pos - 1])
 
-    
+
 def mostrar_medida_tendencia(lista_ordenada: list):
     ""
     medida_quartil = get_int("Ingrese una medida entre 1 y 3",
@@ -334,54 +334,57 @@ def mostrar_estadisticas(nombre_proyecto: str, proyectos: dict) -> None:
     if nom_tabla in proyectos[nombre_proyecto]:
         tabla = proyectos[nombre_proyecto][nom_tabla]
 
-    lista_datos = crear_lista_numeros_de_columna(tabla)
-    lista_ordenada = ordenar_array(lista_datos)
+        lista_datos = crear_lista_numeros_de_columna(tabla)
+        lista_ordenada = ordenar_array(lista_datos)
 
-    print("1.Contar valores de columna\n",
-          "2.Mostrar maximo y minimo\n",
-          "3.Mostrar promedios\n",
-          "4.Mostrar mediana\n",
-          "5.Mostrar moda\n",
-          "6.Mostrar medidas de tendencia\n",
-          "7.Mostrar rango\n",
-          "8.Mostrar varianza\n",
-          "9.Mostrar desviación estandar\n",
-          "10.Mostrar coeficiente de varianza\n",
-          "11.Salir de mostrar estadisticas\n")
-    
-    opcion_elegida = 0
-
-    while opcion_elegida != 11:
-            
-        opcion_elegida = get_int("Ingrese una opción: ", 
-                                "La opcion debe ser número entero(1 a 11)", 
-                                1, 11)
+        print("1.Contar valores de columna\n",
+            "2.Mostrar maximo y minimo\n",
+            "3.Mostrar promedios\n",
+            "4.Mostrar mediana\n",
+            "5.Mostrar moda\n",
+            "6.Mostrar medidas de tendencia\n",
+            "7.Mostrar rango\n",
+            "8.Mostrar varianza\n",
+            "9.Mostrar desviación estandar\n",
+            "10.Mostrar coeficiente de varianza\n",
+            "11.Salir de mostrar estadisticas\n")
         
-        match opcion_elegida:
-            case 1:
-                contar_valores_columna(lista_ordenada)
-            case 2:
-                mostrar_maximo_y_minimo(lista_ordenada)
-            case 3:
-                mostrar_promedios(lista_ordenada)
-            case 4:
-                mostrar_mediana(lista_ordenada)
-            case 5:
-                mostrar_moda(lista_ordenada)
-            case 6:
-                mostrar_medida_tendencia(lista_ordenada)
-            case 7:
-                mostrar_rango(lista_ordenada)
-            case 8:
-                print(f"La varianza es: {retornar_varianza(lista_ordenada)}")
-            case 9:
-                print(f"La desviacion estandar es: "
-                    f"{retornar_desviacion_estandar(lista_ordenada)}")
-            case 10:
-                mostrar_coeficiente_de_variacion(lista_ordenada)
-            case 11:
-                break
-            case _:
-                opcion_elegida = get_int("Ingrese una opción", 
-                                "La opcion debe ser número entero(1 a 10)", 
-                                1, 11)
+        opcion_elegida = 0
+
+        while opcion_elegida != 11:
+                
+            opcion_elegida = get_int("Ingrese una opción: ", 
+                                    "La opcion debe ser número entero(1 a 11)", 
+                                    1, 11)
+            
+            match opcion_elegida:
+                case 1:
+                    contar_valores_columna(lista_ordenada)
+                case 2:
+                    mostrar_maximo_y_minimo(lista_ordenada)
+                case 3:
+                    mostrar_promedios(lista_ordenada)
+                case 4:
+                    mostrar_mediana(lista_ordenada)
+                case 5:
+                    mostrar_moda(lista_ordenada)
+                case 6:
+                    mostrar_medida_tendencia(lista_ordenada)
+                case 7:
+                    mostrar_rango(lista_ordenada)
+                case 8:
+                    print(f"La varianza es: {retornar_varianza(lista_ordenada)}")
+                case 9:
+                    print(f"La desviacion estandar es: "
+                        f"{retornar_desviacion_estandar(lista_ordenada)}")
+                case 10:
+                    mostrar_coeficiente_de_variacion(lista_ordenada)
+                case 11:
+                    break
+                case _:
+                    opcion_elegida = get_int("Ingrese una opción", 
+                                    "La opcion debe ser número entero(1 a 10)", 
+                                    1, 11)
+                    
+    else:
+        print("No existe tabla con ese nombre!")
