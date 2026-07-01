@@ -110,8 +110,8 @@ def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
             for f in range(cant_f):
                 fila = []
                 for c in range(len(columnas)):
-                    valor_celda = input(f"{columnas[c]}: ") #antes: columnas[c] + ": "
-                    valor_celda = es_numero(valor_celda)            #nuevo
+                    valor_celda = input(f"{columnas[c]}: ")
+                    valor_celda = es_numero(valor_celda)            
                     fila.append(valor_celda)
                 matriz.append(fila)
             
@@ -121,11 +121,9 @@ def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
     elif opc == "2":
         archivo_csv = open("paquete/archivos/tablas.csv", "w")
 
-        # Recorremos todas las tablas que pertenezcan a el proyecto
         for nom_tabla in proyectos[nombre_proyecto]:
             tabla_actual = proyectos[nombre_proyecto][nom_tabla]
             
-            # Escribimos los encabezados de la tabla
             linea_columnas = ""
             for i in range(len(tabla_actual['columnas'])):
                 linea_columnas = linea_columnas + str(tabla_actual['columnas'][i])
@@ -135,7 +133,6 @@ def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
             linea_columnas = linea_columnas + "\n"
             archivo_csv.write(linea_columnas)
 
-            # Escribimos las filas de la matriz 
             for f in range(len(tabla_actual['matriz'])):
                 linea_fila = ""
                 for c in range(len(tabla_actual['matriz'][f])):

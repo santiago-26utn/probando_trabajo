@@ -33,10 +33,10 @@ def registrar_usuario():
         u, _ = separar_linea(linea_limpia, ",")
         if u == usuario:
             print("El usuario ya existe en la base de datos.")
-            f.close() # ¡IMPORTANTE! Cerramos antes de salir con return
+            f.close() 
             return 
 
-    f.close() # Cerramos si terminó el bucle y no encontró al usuario
+    f.close() 
 
     contrasenia = limpiar_texto(input("Ingrese su contraseña: "))
     if len(contrasenia) < 4:
@@ -66,9 +66,9 @@ def iniciar_sesion() -> bool:
         u, c = separar_linea(linea_limpia, ",")
         if u == usuario and c == contrasenia:
             print("¡Bienvenido, " + usuario + "!")
-            f.close() # ¡IMPORTANTE! Cerramos antes de salir con True
+            f.close() 
             return True 
                 
-    f.close() # Cerramos si terminó de buscar en todo el archivo y no lo encontró
+    f.close() 
     print("Usuario o contraseña incorrectos.")
     return False

@@ -20,11 +20,10 @@ def elegir_tipo_dato() -> str:
 
     return tipo_dato
 
-#esto va en variables!
 def agregar_dato(tipo_dato: str) -> any:
     ""
     if tipo_dato == "texto":
-        dato = input("Agregar dato: ")      #hacer un transformar dato
+        dato = input("Agregar dato: ")      
     elif tipo_dato == "vacio":
         dato = " "
     elif tipo_dato == "numerico":
@@ -33,7 +32,6 @@ def agregar_dato(tipo_dato: str) -> any:
 
     return dato
 
-#esto no se si va en variables o modificar tabla o crear tabla
 def cargar_fila(tabla: dict) -> list:
     ""
     fila = []
@@ -89,7 +87,6 @@ def agregar_columna(tabla: dict) -> None:
     nombre_columna = input("Ingrese nombre para nueva columna: ")
     tabla['columnas'].append(nombre_columna)
     
-    # Registramos qué tipo de datos va a aceptar esta nueva columna
     print(f"Defina el tipo de datos para la nueva columna '{nombre_columna}':")
     tipo_nueva_col = elegir_tipo_dato()
     tabla['tipos'].append(tipo_nueva_col)
@@ -103,7 +100,6 @@ def eliminar_fila(tabla: dict) -> None:
 
     fila = int(input("Ingrese número de fila a eliminar: "))
 
-    # ANTES: tabla.remove(tabla[fila])
 
     if 0 <= fila < len(tabla['matriz']):
 
@@ -122,7 +118,7 @@ def eliminar_columna(tabla: dict) -> None:
 
     if indice_columna != -1:
         tabla['columnas'].pop(indice_columna)
-        tabla['tipos'].pop(indice_columna) # CORREGIDO: Mantiene la paridad eliminando el tipo
+        tabla['tipos'].pop(indice_columna) 
         for fila in tabla['matriz']:
             fila.pop(indice_columna)
     else:
@@ -135,21 +131,18 @@ def eliminar_columna(tabla: dict) -> None:
 #d.1-mostrar tabla completa
 def mostrar_tabla_completa(tabla: dict) -> None:
     """Modificado: Imprime por separado la cabecera ('columnas') y el cuerpo ('matriz')."""
-    # 1. Imprimir títulos de columnas
     print("|", end="")
     for col in tabla['columnas']:
         print(f" {col:^10} |", end="")
     print()
-    print("-" * (13 * len(tabla['columnas'])))          #ver cual queda mejor, esta funcion o la de santi
+    print("-" * (13 * len(tabla['columnas'])))         
     
-    # 2. Imprimir las filas de datos
     for fila in tabla['matriz']:
         print("|", end="")
         for dato in fila:
             print(f" {dato:^10} |", end="")
         print()
 
-#d.2-mostrar tabla por columna/columnas
 
 
 def obtener_indice_columna(tabla: dict, nombre_columna: str) -> int:
@@ -165,8 +158,6 @@ def obtener_indice_columna(tabla: dict, nombre_columna: str) -> int:
 def obtener_columna_por_indice(tabla: dict, numero_columna: int) -> list:   
     """Modificado: Recorre las filas puras guardando el valor de la columna."""
     lista_columna = []
-    # ANTES: recorría toda la 'tabla' trayendo también el nombre de la columna. 
-    # Si preferís mantener el nombre como primer elemento, agregás tabla['columnas'][numero_columna] primero.
     for i in range(len(tabla['matriz'])):
         lista_columna.append(tabla['matriz'][i][numero_columna])
     return lista_columna
@@ -233,7 +224,6 @@ def seleccionar_columnas_tabla(tabla: dict) -> list:
 
     while cargar == "s":
         columna = retornar_columna(tabla)
-        # Guardamos la columna obtenida de la tabla
         lista_seleccionadas.append(obtener_columna_por_nombre(tabla, columna))
 
         cargar = obtener_respuesta("Quiere seleccionar otra columna?(s/n): ",
@@ -265,7 +255,6 @@ def mostrar_columnas_seleccionadas(tabla: dict) -> None:
         print("No se seleccionó ninguna columna.")
 
 
-#d.3-mostrar fila
 def verificar_filas(tabla: dict) -> int:
     """Modificado: El rango válido ahora va desde 0 hasta la cantidad de 'filas' - 1."""
     fila = get_int_simple("Elija una fila (por índice numérico): ", "Error, Ingrese número entero positivo")
@@ -304,18 +293,15 @@ def mostrar_fila_tabla0(tabla: list) -> None:
         print(f"{dato:<15}", end="")
     print()
 
-###################
 
 def mostrar_fila_tabla(tabla: dict) -> None:
     """Modificado: Corrige la lógica para mostrar los títulos y la fila seleccionada."""
     fila_idx = verificar_filas(tabla)
     
-    # Imprimir columnas primero para referencia limpia
     for col in tabla['columnas']:
         print(f"{col:<15}", end="")
     print("\n" + "-" * (15 * len(tabla['columnas'])))
     
-    # Imprimir los datos de la fila elegida
     for dato in tabla['matriz'][fila_idx]:
         print(f"{dato:<15}", end="")
     print()
@@ -406,11 +392,9 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
         elif opcion == 3:
             archivo_csv = open("probando_trabajo/paquete/archivos/tablas.csv", "w")
 
-            # Recorremos todas las tablas que pertenezcan a el proyecto
             for nom_tabla in proyectos[nombre_proyecto]:
                 tabla_actual = proyectos[nombre_proyecto][nom_tabla]
                 
-                # Escribimos los encabezados de la tabla
                 linea_columnas = ""
                 for i in range(len(tabla_actual['columnas'])):
                     linea_columnas = linea_columnas + str(tabla_actual['columnas'][i])
@@ -420,7 +404,6 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                 linea_columnas = linea_columnas + "\n"
                 archivo_csv.write(linea_columnas)
 
-                # Escribimos el tipo de datos de la tabla:
                 linea_tipos = ""
                 for t in range(len(tabla_actual['tipos'])):
                     linea_tipos = linea_tipos + str(tabla_actual['tipos'][t])
@@ -430,7 +413,6 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                 linea_tipos = linea_tipos + "\n"
                 archivo_csv.write(linea_tipos)
 
-                # Escribimos las filas de la matriz 
                 for f in range(len(tabla_actual['matriz'])):
                     linea_fila = ""
                     for c in range(len(tabla_actual['matriz'][f])):

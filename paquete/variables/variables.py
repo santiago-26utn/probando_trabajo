@@ -12,10 +12,8 @@ def cargar_tabla_secuencial(tabla: dict) -> dict:
                                 "Error, ingresar solo 's' o 'n'",
                                 "s", "n")
         
-        # Usamos un índice para saber qué fila de la matriz estamos completando
         f = 0 
 
-        # El bucle continúa si el usuario quiere seguir Y todavía quedan filas con None
         while cargar == "s" and f < total_filas:
             print(f"---Cargando datos fila {f + 1}---")
             
@@ -43,7 +41,6 @@ def modificar_celda_individual(tabla: dict, f: int, c: int) -> None:
                                   "Error, ingrese 'si' o 'no'", "si", "no")
     if modificar == "si":
         nuevo_dato = input("Ingrese nuevo dato: ")
-        # Si no puedes usar transformar_dato, quítalo y deja solo el input
         tabla['matriz'][f][c] = transformar_dato(nuevo_dato)
 
 

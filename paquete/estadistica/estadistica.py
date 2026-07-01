@@ -33,7 +33,6 @@ def listar_valores_repetidos(lista: list) -> list:
         lista_valores.append(lista[0])
 
     for i in range(1, len(lista)):
-        # ANTES: if i not in lista_valores:
         if lista[i] not in lista_valores:
             lista_valores.append(lista[i])
 
@@ -137,7 +136,7 @@ def obtener_columna_con_numeros(tabla: dict) -> str:
         str: retorna la columna si solo contiene numeros.
     """
     columna = retornar_columna(tabla)
-    columna_numeros = verificar_columna_con_numeros(tabla, columna)         #ver si se puede evitar repeticion de codigo
+    columna_numeros = verificar_columna_con_numeros(tabla, columna)         
 
     while columna_numeros == False:
         print(" Esa columna no es numérica o contiene texto. Elija otra.")

@@ -341,7 +341,7 @@ def transformar_dato(dato_ingresado: any) -> str|float:
     dato_numerico = 0
     dato_transformado = ""
 
-    if type(dato_ingresado) == int or dato_ingresado in "0123456789":       #arreglar esto que no acepta los numeros float
+    if type(dato_ingresado) == int or dato_ingresado in "0123456789":
         dato_numerico += int(dato_ingresado)
     else:
         for i in range(len(dato_ingresado)):
