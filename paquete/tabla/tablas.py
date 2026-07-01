@@ -174,7 +174,6 @@ def obtener_columna_por_indice(tabla: dict, numero_columna: int) -> list:
 def obtener_columna_por_nombre(tabla: dict, columna: str) -> list:   
     """Modificado: Revisa las claves correspondientes."""
     lista_columna = []
-    # ANTES: tabla[0]
     for i in range(len(tabla['columnas'])):
         if tabla['columnas'][i] == columna:
             lista_columna = obtener_columna_por_indice(tabla, i)
@@ -182,12 +181,12 @@ def obtener_columna_por_nombre(tabla: dict, columna: str) -> list:
 
 def mostrar_columna(tabla: dict, columna_elegida: str):
     """Modificado: Busca en la lista de metadatos 'columnas'."""
-    total_columnas = len(tabla['columnas']) # ANTES: tabla[0]
+    total_columnas = len(tabla['columnas']) 
     posicion_columna = 0
     columna_encontrada = False
     
     while total_columnas > posicion_columna and columna_encontrada == False:
-        if tabla['columnas'][posicion_columna] == columna_elegida: # ANTES: tabla[0]
+        if tabla['columnas'][posicion_columna] == columna_elegida: 
             columna_encontrada = True
         posicion_columna += 1
 
@@ -203,7 +202,6 @@ def verificar_columnas(tabla: dict, columna_elegida: str) -> bool:
     columna_encontrada = False
 
     while total_columnas > posicion_columna and not columna_encontrada:
-        # Comparación directa de los elementos indexados
         if tabla['columnas'][posicion_columna] == columna_elegida:
             columna_encontrada = True
         posicion_columna += 1
@@ -268,7 +266,6 @@ def verificar_filas(tabla: dict) -> int:
     """Modificado: El rango válido ahora va desde 0 hasta la cantidad de 'filas' - 1."""
     fila = get_int_simple("Elija una fila (por índice numérico): ", "Error, Ingrese número entero positivo")
 
-    # ANTES: len(tabla) - 1 (contaba la cabecera). Ahora es el largo directo de la lista 'filas'
     total_filas = len(tabla['matriz']) - 1
     
     if total_filas < 0:
@@ -321,19 +318,25 @@ def mostrar_fila_tabla(tabla: dict) -> None:
 
 
 def filtrar_columnas(tabla: dict) -> None:
-    """Modificado: Filtra directo sobre 'filas' sin chocar con la fila de títulos."""
+    """Modificado: Filtra directo sobre la clave 'matriz' manteniendo el diseño visual."""
     columna = retornar_columna(tabla)
     valor_buscado = input("Ingrese el valor a filtrar: ")
     indice_columna = obtener_indice_columna(tabla, columna)
 
-    # Imprime la estructura de cabecera vacía temporal
-    mostrar_tabla_completa({'columnas': tabla['columnas'], 'filas': []})
+    # 1. Imprimir títulos de columnas (Formato idéntico a mostrar_tabla_completa)
+    print("|", end="")
+    for col in tabla['columnas']:
+        print(f" {col:^10} |", end="")
+    print()
+    print("-" * (13 * len(tabla['columnas'])))
 
-    # ANTES: range(1, len(tabla)) -> Ahora recorremos todo desde el índice 0 de 'filas'
+    # 2. Filtrar e imprimir las filas que coincidan usando el mismo formato de celdas
     for fila in range(len(tabla['matriz'])):
         if str(tabla['matriz'][fila][indice_columna]) == valor_buscado:
+            print("|", end="")
             for dato in tabla['matriz'][fila]:
-                print(f"{dato:<15}", end="")
+                # Usamos el mismo formateo centrado ':^10' para mantener la alineación de la tabla
+                print(f" {str(dato):^10} |", end="")
             print()
 
 
@@ -378,13 +381,14 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
 
     print("1-Crear tabla")
     print("2-Modificar tabla")
-    print("3-Salir de crear tabla")
+    print("3-Guardar tabla")
+    print("4-Salir de crear tabla")
 
     opcion = get_int("Ingresar una opcion numerica: ", 
                      "Error, Intente otra vez", 
-                     1, 3)
+                     1, 4)
 
-    while opcion != 3:
+    while opcion != 4:
         if opcion == 1:
             nom_tabla = limpiar_texto(input("Nombre tabla: "))
         
@@ -431,13 +435,54 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                     print("Error, tabla vacia")
             else:
                 print("La tabla especificada no existe en este proyecto.")
+        
+        elif opcion == 3:
+            archivo_csv = open("probando_trabajo/paquete/archivos/tablas.csv", "w")
+
+            # Recorremos todas las tablas que pertenezcan a el proyecto
+            for nom_tabla in proyectos[nombre_proyecto]:
+                tabla_actual = proyectos[nombre_proyecto][nom_tabla]
                 
-        print("\n1-Crear tabla\n2-Modificar tabla\n3-Salir")
+                # Escribimos los encabezados de la tabla
+                linea_columnas = ""
+                for i in range(len(tabla_actual['columnas'])):
+                    linea_columnas = linea_columnas + str(tabla_actual['columnas'][i])
+                    if i < len(tabla_actual['columnas']) - 1:
+                        linea_columnas = linea_columnas + ","
+                
+                linea_columnas = linea_columnas + "\n"
+                archivo_csv.write(linea_columnas)
+
+                # Escribimos el tipo de datos de la tabla:
+                linea_tipos = ""
+                for t in range(len(tabla_actual['tipos'])):
+                    linea_tipos = linea_tipos + str(tabla_actual['tipos'][t])
+                    if t < len(tabla_actual['tipos']) - 1:
+                        linea_tipos = linea_tipos + ","
+                
+                linea_tipos = linea_tipos + "\n"
+                archivo_csv.write(linea_tipos)
+
+                # Escribimos las filas de la matriz 
+                for f in range(len(tabla_actual['matriz'])):
+                    linea_fila = ""
+                    for c in range(len(tabla_actual['matriz'][f])):
+                        linea_fila = linea_fila + str(tabla_actual['matriz'][f][c])
+                        if c < len(tabla_actual['matriz'][f]) - 1:
+                            linea_fila = linea_fila + ","
+                    
+                    linea_fila = linea_fila + "\n"
+                    archivo_csv.write(linea_fila)
+
+            archivo_csv.close()
+            print("¡Todas las tablas del proyecto fueron guardadas en archivos/tablas.csv!")
+                
+        print("\n1-Crear tabla\n2-Modificar tabla\n3-Guardar tabla\n4-Salir")
 
         opcion = get_int("Ingresar una opcion numerica: ", 
-                         "Error, Intente otra vez", 1, 3)
+                         "Error, Intente otra vez", 1, 4)
     
-    return proyectos, tabla_tipos
+    return proyectos
 
 
 def modificar_tabla(tabla: list):
@@ -489,13 +534,24 @@ def mostrar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
                          "Error, Intente otra vez", 
                          1, 5)
 
-        if opcion == 1:
-            mostrar_tabla_completa(tabla)
-        elif opcion == 2:
-            mostrar_fila_tabla(tabla)
-        elif opcion == 3:
-            mostrar_columnas_seleccionadas(tabla)
-        elif opcion == 4:
-            filtrar_columnas(tabla)
+        while opcion != 5:
+            if opcion == 1:
+                mostrar_tabla_completa(tabla)
+            elif opcion == 2:
+                mostrar_fila_tabla(tabla)
+            elif opcion == 3:
+                mostrar_columnas_seleccionadas(tabla)
+            elif opcion == 4:
+                filtrar_columnas(tabla)
+            
+            print("1-Mostrar tabla completa")
+            print("2-Mostrar fila")
+            print("3-Seleccionar columnas")
+            print("4-Filtrar")
+            print("5-Salir de mostrar tabla")
+
+            opcion = get_int("Ingresar una opcion numerica: ", 
+                            "Error, Intente otra vez", 
+                            1, 5)
     else:
         print("¡Tabla vacía!")

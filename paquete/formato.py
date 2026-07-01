@@ -1,12 +1,7 @@
 from paquete.validacion.validaciones import limpiar_texto, leer_entero_validado, convertir_a_minuscula
 from paquete.estadistica import estadistica
-<<<<<<< Updated upstream
-from paquete.validacion.validaciones import es_par_recursivo, es_primo_recursivo, es_multiplo_recursivo, es_numero
-from paquete.tabla import *
-=======
 from paquete.validacion.validaciones import *
 
->>>>>>> Stashed changes
 
 def mostrar_tabla_prolija(tabla_dict: dict, 
                           columnas_filtradas: list = None):
@@ -92,15 +87,9 @@ def separar_por_comas(texto: str) -> list:
 def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
     if nombre_proyecto not in proyectos: 
         proyectos[nombre_proyecto] = {}
-<<<<<<< Updated upstream
+
     print("\n1. Crear Tabla\n2. Guardar tabla\n3. Modificar Tabla")
     opc = input("Opción: ")
-=======
-    print("\n1. Crear Tabla\n2. Modificar Tabla\n3. Salir gestionar Tabla")
-    opc = get_int("Ingrese una opcion numerica: ",
-                  "Error, ingrese un número entre 1 y 3 ",
-                  1, 3)
->>>>>>> Stashed changes
     
     if opc == "1":
         nom_tabla = limpiar_texto(input("Nombre tabla: "))

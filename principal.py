@@ -11,7 +11,6 @@ from paquete.variables.variables import *
 
 proyectos = {}
 
-
 continuar_login = True
 sistema_activa = False
 while continuar_login:
@@ -50,16 +49,13 @@ while sistema_activa:
             print("Cambiado a: " + nuevo_p)
             proyecto_activo = nuevo_p
 
-        #case 2 | 3:  
-        #    gestionar_tablas(proyecto_activo, proyectos)
-
         case 2:
             crear_o_modificar_tabla(proyecto_activo, proyectos)
         case 3:
             modificar_variables(proyecto_activo, proyectos)
 
         case 4:
-            nom_tabla = limpiar_texto(input("Tabla a visualizar: "))
+            """nom_tabla = limpiar_texto(input("Tabla a visualizar: "))
             if nom_tabla in proyectos[proyecto_activo]:
                 if obtener_respuesta("Desea filtrar(s/n)?",
                                      "Error, ingrese 's' o 'n'",
@@ -68,11 +64,11 @@ while sistema_activa:
                 else: 
                     mostrar_tabla_prolija(proyectos[proyecto_activo][nom_tabla])
             else: 
-                print("No encontrada.")
+                print("No encontrada.")"""
+            mostrar_tabla(proyecto_activo, proyectos)
 
         case 5:
             mostrar_estadisticas(proyecto_activo, proyectos)
-            #ejecutar_estadisticas(proyecto_activo, proyectos)
 
         case 6:
             print("Saliendo del sistema.")

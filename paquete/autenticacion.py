@@ -19,15 +19,15 @@ def separar_linea(cadena: str, separador: str) -> tuple:
 
 def registrar_usuario():
     # 1. Aseguramos que el archivo exista en la carpeta 'archivos'
-    creador = open("paquete/archivos/usuarios.csv", "a")
+    creador = open("probando_trabajo/paquete/archivos/usuarios.csv", "a")
     creador.close()
     usuario = limpiar_texto(input("Ingrese el usuario a registrar: "))
-    f = open("paquete/archivos/usuarios.csv", "r")
+    f = open("probando_trabajo/paquete/archivos/usuarios.csv", "r")
 
 
 
     # 2. Leemos para verificar si el usuario ya existe
-    f = open("paquete/archivos/usuarios.csv", "r")
+    f = open("probando_trabajo/paquete/archivos/usuarios.csv", "r")
     for linea in f:
         linea_limpia = limpiar_texto(linea)
         u, _ = separar_linea(linea_limpia, ",")
@@ -44,7 +44,7 @@ def registrar_usuario():
         return
 
     # 3. Guardamos el nuevo usuario en la carpeta 'archivos'
-    f = open("paquete/archivos/usuarios.csv", "a")
+    f = open("probando_trabajo/paquete/archivos/usuarios.csv", "a")
     f.write(usuario + "," + contrasenia + "\n")
     f.close()
         
@@ -56,11 +56,11 @@ def iniciar_sesion() -> bool:
     
     usuario = limpiar_texto(input("Usuario: "))
     contrasenia = limpiar_texto(input("Contraseña: "))
-    
-    creador = open("paquete/archivos/usuarios.csv", "a")
+
+    creador = open("probando_trabajo/paquete/archivos/usuarios.csv", "a")
     creador.close()
         
-    f = open("paquete/archivos/usuarios.csv", "r")
+    f = open("probando_trabajo/paquete/archivos/usuarios.csv", "r")
     for linea in f:
         linea_limpia = limpiar_texto(linea)
         u, c = separar_linea(linea_limpia, ",")

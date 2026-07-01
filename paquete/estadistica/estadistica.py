@@ -296,8 +296,18 @@ def mostrar_promedios(lista: list) -> None:
     print(f"El promedio aritmetico es: {promedio_geometrico}")
 
 
-def mostrar_medida_tendencia(lista_ordenada):
+def mostrar_medida_tendencia(lista_ordenada: list):
     ""          #terminar
+
+
+def mostrar_quartiles(lista: list):
+    ""
+
+def mostrar_deciles(lista: list):
+    ""
+
+def mostrar_percentil(lista: list):
+    ""
 
 
 def mostrar_estadisticas(nombre_proyecto: str, proyectos: dict) -> None:

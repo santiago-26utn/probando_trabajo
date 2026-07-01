@@ -112,24 +112,36 @@ def modificar_variables(nombre_proyecto: str, proyectos: dict) -> None:
     print("4-Modificar una variable/celda específica")
     print("5-Salir de modificar variables")
 
-    opcion = get_int("Ingresar una opcion numerica: ", "Error, Intente otra vez", 1, 4)
+    opcion = get_int("Ingresar una opcion numerica: ", 
+                     "Error, Intente otra vez", 
+                     1, 5)
 
-    match opcion:
-        case 1:
-            cargar_tabla_secuencial(tabla)
-        case 2:
-            modificar_fila(tabla)
-        case 3:
-            modificar_columna(tabla)
-        case 4:
-            if len(tabla['matriz']) == 0:
-                print("La tabla no tiene filas de datos.")
-                return
+    while opcion != 5:
+        match opcion:
+            case 1:
+                cargar_tabla_secuencial(tabla)
+            case 2:
+                modificar_fila(tabla)
+            case 3:
+                modificar_columna(tabla)
+            case 4:
+                if len(tabla['matriz']) == 0:
+                    print("La tabla no tiene filas de datos.")
+                    return
+                    
+                f = verificar_filas(tabla) 
+                col_nombre = retornar_columna(tabla) 
+                c = obtener_indice_columna(tabla, col_nombre)
                 
-            f = verificar_filas(tabla) 
-            col_nombre = retornar_columna(tabla) 
-            c = obtener_indice_columna(tabla, col_nombre)
+                elegir_modificacion_de_variable(tabla, f, c)
+        
+        print("1-Cargar tabla secuencial")
+        print("2-Modificar fila completa")
+        print("3-Modificar columna completa")
+        print("4-Modificar una variable/celda específica")
+        print("5-Salir de modificar variables")
+
+        opcion = get_int("Ingresar una opcion numerica: ", 
+                        "Error, Intente otra vez", 
+                        1, 5)
             
-            elegir_modificacion_de_variable(tabla, f, c)
-        case 5:
-            print("Saliendo del menú de variables...")
