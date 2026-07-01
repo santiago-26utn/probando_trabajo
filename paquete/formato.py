@@ -1,9 +1,22 @@
 from paquete.validacion.validaciones import limpiar_texto, leer_entero_validado, convertir_a_minuscula
 from paquete.estadistica import estadistica
+<<<<<<< Updated upstream
 from paquete.validacion.validaciones import es_par_recursivo, es_primo_recursivo, es_multiplo_recursivo, es_numero
 from paquete.tabla import *
+=======
+from paquete.validacion.validaciones import *
 
-def mostrar_tabla_prolija(tabla_dict: dict, columnas_filtradas: list = None):
+>>>>>>> Stashed changes
+
+def mostrar_tabla_prolija(tabla_dict: dict, 
+                          columnas_filtradas: list = None):
+    """Muestra la tabla ordenada.
+
+    Args:
+        tabla_dict (dict): diccionario
+        columnas_filtradas (list, opcional): opcion para filtrar tablas,
+                                             por defecto None.
+    """
     columnas = tabla_dict['columnas']
     matriz = tabla_dict['matriz']
     
@@ -79,14 +92,21 @@ def separar_por_comas(texto: str) -> list:
 def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
     if nombre_proyecto not in proyectos: 
         proyectos[nombre_proyecto] = {}
+<<<<<<< Updated upstream
     print("\n1. Crear Tabla\n2. Guardar tabla\n3. Modificar Tabla")
     opc = input("Opción: ")
+=======
+    print("\n1. Crear Tabla\n2. Modificar Tabla\n3. Salir gestionar Tabla")
+    opc = get_int("Ingrese una opcion numerica: ",
+                  "Error, ingrese un número entre 1 y 3 ",
+                  1, 3)
+>>>>>>> Stashed changes
     
     if opc == "1":
         nom_tabla = limpiar_texto(input("Nombre tabla: "))
         
         if nom_tabla in proyectos[nombre_proyecto]:
-            print("❌ La tabla ya existe en este proyecto.")
+            print("La tabla ya existe en este proyecto.")
         else:
             cant_cols = leer_entero_validado("Columnas: ")
         
@@ -164,6 +184,9 @@ def gestionar_tablas(nombre_proyecto: str, proyectos: dict):
             print("No existe.")
         
         
+
+    elif opc == 3:
+        print("Salir")
 
 
 def ejecutar_estadisticas(nombre_proyecto: str, proyectos: dict):

@@ -1,4 +1,13 @@
 def limpiar_texto(texto: str) -> str:
+    """Devuelve 'texto' tras eliminar espacios en blanco y caracteres 
+       especiales.
+
+    Args:
+        texto (str): cadena de texto.
+
+    Returns:
+        str: Retorna una cadena de texto tras 'limpiarla'
+    """
     resultado_str = texto
     if len(texto) > 0:
         inicio = 0
@@ -17,8 +26,16 @@ def limpiar_texto(texto: str) -> str:
 
     return resultado_str
 
-def convertir_a_minuscula(texto: str) -> str:
 
+def convertir_a_minuscula(texto: str) -> str:
+    """Convierte el texto a minuscula.
+
+    Args:
+        texto (str): cadena de texto.
+
+    Returns:
+        str: retorna el texto convertido en minusculas.
+    """
     resultado_str = ""
     for i in range(len(texto)):
         caracter = texto[i]
@@ -26,6 +43,7 @@ def convertir_a_minuscula(texto: str) -> str:
             resultado_str += chr(ord(caracter) + 32)
         else:
             resultado_str += caracter
+
     return resultado_str
 
 def es_par_recursivo(n: int) -> bool:
@@ -125,8 +143,19 @@ def leer_entero_validado(mensaje: str) -> int:
 def obtener_respuesta(mensaje: str, 
                       mensaje_error: str, 
                       respuesta_positiva: str,
-                      respuesta_negativa: str):
-    ""
+                      respuesta_negativa: str) -> str:
+    """Pide una respuesta a una pregunta de si o no.
+
+    Args:
+        mensaje (str): mensaje pregunta.
+        mensaje_error (str): mensaje error.
+        respuesta_positiva (str): respuesta positiva.
+        respuesta_negativa (str): respuesta negativa.
+
+    Returns:
+        str: retorna un texto igual a 'respuesta positiva' o 
+             igual a 'respuesta negativa'.
+    """
     respuesta_aceptada = False
 
     while True:
@@ -152,7 +181,16 @@ def validar_rango(valor: any, minimo: int, maximo: int) -> bool:
     return minimo <= valor <= maximo
 
 def get_int_simple(mensaje: str, mensaje_error: str) -> int:
-    ""
+    """Pide repetidamente al usuario un numero entero, 
+       deja de pedir cuando el dato es correctamente ingresado.
+
+    Args:
+        mensaje (str): mensaje.
+        mensaje_error (str): mensaje error.
+
+    Returns:
+        int: retorna el numero elegido.
+    """
 
     while True:
         dato = input(mensaje)
@@ -172,8 +210,22 @@ def get_int_simple(mensaje: str, mensaje_error: str) -> int:
         print(mensaje_error)
 
 
-def get_int(mensaje: str, mensaje_error: str, minimo: int, maximo: int) -> int:
-    ""
+def get_int(mensaje: str, 
+            mensaje_error: str, 
+            minimo: int, 
+            maximo: int) -> int:
+    """Pide repetidamente al usuario un numero entero entre cierto rango, 
+       deja de pedir cuando el dato es correctamente ingresado.
+
+    Args:
+        mensaje (str): mensaje.
+        mensaje_error (str): mensaje error.
+        minimo (int): rango minimo.
+        maximo (int): rango maximo.
+
+    Returns:
+        int: retorna el numero elegido dentro del rango.
+    """
 
     while True:
         numero = get_int_simple(mensaje, mensaje_error)
@@ -307,7 +359,16 @@ def transformar_dato(dato_ingresado: any) -> str|float:
 
 
 def es_numero(posible_numero: str) -> int | str:
-    ""
+    """Si 'posible_numero' es un numero lo convierte en int,
+       caso contrario lo deja como str.
+
+    Args:
+        posible_numero (str): una cadena de texto.
+
+    Returns:
+        int | str: Retorna int si 'posible_numero' es un número, caso
+                   contrario retorna el dato original sin cambios.
+    """
     es_numero = True
     dato = posible_numero
     n = len(dato)

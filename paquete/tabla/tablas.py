@@ -2,7 +2,7 @@ from paquete.validacion.validaciones import *
 
 
 
-def elegir_tipo_dato() -> list:         #modificar a futuro
+def elegir_tipo_dato() -> str:        
     ""  
 
 
@@ -24,7 +24,7 @@ def elegir_tipo_dato() -> list:         #modificar a futuro
 def agregar_dato(tipo_dato: str) -> any:
     ""
     if tipo_dato == "texto":
-        dato = input("Agregar dato: ")      #hacer un get lenght
+        dato = input("Agregar dato: ")      #hacer un transformar dato
     elif tipo_dato == "vacio":
         dato = " "
     elif tipo_dato == "numerico":
@@ -48,39 +48,26 @@ def cargar_fila(tabla: dict) -> list:
             dato = transformar_dato(dato)
             tabla['columnas'].append(dato) 
     else:
-        # ANTES: len(tabla[0])          #verificar esta parte!
         for i in range(len(tabla['columnas'])):
-            print(tabla['columnas'][i])
-            tipo_dato = elegir_tipo_dato()      
-            dato = agregar_dato(tipo_dato)
-            dato = transformar_dato(dato)
+            print(f"Columna [{tabla['columnas'][i]}] (Tipo esperado: {tabla['tipos'][i]})")
+            dato = agregar_dato(tabla['tipos'][i])
             fila.append(dato)
 
     return fila
 
 
-def cargar_tabla_secuencial(tabla: dict) -> dict:
+
+
+
+def crear_tabla(columnas: int, filas: int) -> list:
     ""
-    cargar = obtener_respuesta("Quiere cargar una fila de datos?(s/n)",
-                                "Error, ingresar solo 's' o 'n'",
-                                "s", "n")
+    matriz_tabla = []
 
-    while cargar == "s":
-        nueva_fila = cargar_fila(tabla)
-        
-        # ANTES: tabla.append(nueva_fila)
-        if len(nueva_fila) > 0: # Evita guardar estructuras vacías si solo creó columnas
-            tabla['matriz'].append(nueva_fila)
-    
-        cargar = obtener_respuesta("Quiere cargar una fila de datos?(s/n)",
-                                    "Error, ingresar solo 's' o 'n'",
-                                    "s", "n")
-    return tabla
-
-
-def crear_tabla() -> list:
-    ""
-    matriz_tabla = []        
+    for i in range(filas):
+        fila = []
+        for j in range(columnas):
+            fila += [None]
+        matriz_tabla += [fila]
 
     return matriz_tabla
 
@@ -91,51 +78,51 @@ def crear_tabla() -> list:
 def agregar_fila(tabla: dict) -> None:
     """Modificado: Revisa la longitud de 'columnas' y añade a 'filas'."""
     nueva_fila = []
-    # ANTES: len(tabla[0])
     for i in range(len(tabla['columnas'])):
-        nueva_fila.append(agregar_dato("vacio"))
+        nueva_fila.append(None)
     
-    # ANTES: tabla.append(nueva_fila)
     tabla['matriz'].append(nueva_fila)
     
 
 def agregar_columna(tabla: dict) -> None:
-    """Modificado: Modifica la lista 'columnas' y añade celdas vacías en cada elemento de 'filas'."""
+    """Modificado: Añade la columna y registra su tipo correspondiente."""
     nombre_columna = input("Ingrese nombre para nueva columna: ")
-    nueva_columna = transformar_dato(nombre_columna)
+    tabla['columnas'].append(nombre_columna)
+    
+    # Registramos qué tipo de datos va a aceptar esta nueva columna
+    print(f"Defina el tipo de datos para la nueva columna '{nombre_columna}':")
+    tipo_nueva_col = elegir_tipo_dato()
+    tabla['tipos'].append(tipo_nueva_col)
 
-    # ANTES: tabla[0].append(nueva_columna)
-    tabla['columnas'].append(nueva_columna)
-
-    # ANTES: Recorría la matriz salteando el índice 0. Ahora recorre directo todas las filas.
     for i in range(len(tabla['matriz'])):
-        tabla['matriz'][i].append("")
+        tabla['matriz'][i].append(None)
             
 
 def eliminar_fila(tabla: dict) -> None:
     """Modificado: Remueve una fila interna de la lista tabla['matriz']."""
+
     fila = int(input("Ingrese número de fila a eliminar: "))
+
     # ANTES: tabla.remove(tabla[fila])
+
     if 0 <= fila < len(tabla['matriz']):
+
         tabla['matriz'].pop(fila)
+
     else:
+
         print("Índice de fila inválido.")
 
 
 def eliminar_columna(tabla: dict) -> None:
-    """Modificado: Localiza el índice en 'columnas' y limpia el mismo índice en 'matriz'."""
+    """Modificado: Elimina la columna de los metadatos, de los tipos y de la matriz."""
     nombre_columna = input("Ingrese nombre para eliminar columna: ")
-    nombre_columna = transformar_dato(nombre_columna)
     
-    indice_columna = -1
-    # ANTES: buscaba en tabla[0]
-    for i in range(len(tabla['columnas'])):
-        if tabla['columnas'][i] == nombre_columna:
-            indice_columna = i
+    indice_columna = obtener_indice_columna(tabla, nombre_columna)
 
     if indice_columna != -1:
         tabla['columnas'].pop(indice_columna)
-        # ANTES: recorría 'tabla' completa (incluyendo cabecera)
+        tabla['tipos'].pop(indice_columna) # CORREGIDO: Mantiene la paridad eliminando el tipo
         for fila in tabla['matriz']:
             fila.pop(indice_columna)
     else:
@@ -384,42 +371,73 @@ def filtrar_columnas0(tabla: list) -> None:
 
 
 
-def crear_o_modificar_tabla(tabla: dict) -> dict:         
+def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:    
+
+    if nombre_proyecto not in proyectos: 
+        proyectos[nombre_proyecto] = {}
+
     print("1-Crear tabla")
-    print("2-Cargar tabla")
-    print("3-Modificar tabla")
-    print("4-Salir de crear tabla")
+    print("2-Modificar tabla")
+    print("3-Salir de crear tabla")
 
     opcion = get_int("Ingresar una opcion numerica: ", 
                      "Error, Intente otra vez", 
-                     1, 4)
+                     1, 3)
 
-    while opcion != 4:
+    while opcion != 3:
         if opcion == 1:
-            # Reemplazamos el diccionario vacío en caliente
-            nueva_t = crear_tabla()
-            tabla['columnas'] = nueva_t['columnas']
-            tabla['matriz'] = nueva_t['matriz']
-            print("Estructura inicializada.")
+            nom_tabla = limpiar_texto(input("Nombre tabla: "))
+        
+            if nom_tabla in proyectos[nombre_proyecto]:
+                print("La tabla ya existe en este proyecto.")
+            else:
+                cant_cols = leer_entero_validado("Ingrese cantidad Columnas: ")
+
+                tabla_tipos = []
+                columnas = []
+                for i in range(cant_cols):
+                    col = limpiar_texto(input("Nombre Columna " + str(i + 1) + ": "))
+                    columnas.append(col)
+                    print(f"Para la columna '{col}':")
+                    tip = elegir_tipo_dato()
+                    tabla_tipos.append(tip)
+                    
+                cant_f = leer_entero_validado("Ingrese cantidad Filas: ")
+                
+                matriz = []
+                for f in range(cant_f):
+                    fila = []
+                    for c in range(len(columnas)):
+                        valor_celda = None            
+                        fila.append(valor_celda)
+                    matriz.append(fila)
+                    
+                proyectos[nombre_proyecto][nom_tabla] = {
+                    'columnas': columnas, 
+                    'tipos': tabla_tipos, 
+                    'matriz': matriz
+                }
+                print("¡Tabla Creada!")
 
         elif opcion == 2:
-            # ANTES: len(tabla) == 0
-            if len(tabla['columnas']) == 0 and len(tabla['matriz']) == 0:
-                cargar_tabla_secuencial(tabla)
-            else:
-                print("Ya hay datos en la tabla, para modificarlos elija opcion 3")
-
-        elif opcion == 3:
-            if len(tabla['columnas']) != 0:
-                modificar_tabla(tabla)
-            else:
-                print("Error, tabla vacia")
+            nom_tabla = limpiar_texto(input("Ingrese el nombre de la tabla a modificar: "))
+            
+            if nom_tabla in proyectos[nombre_proyecto]:
+                tabla_elegida = proyectos[nombre_proyecto][nom_tabla]
                 
-        # Re-preguntar para evitar bucle infinito (Tenías un bucle While estancado aquí)
-        print("\n1-Crear tabla\n2-Cargar tabla\n3-Modificar tabla\n4-Salir")
-        opcion = get_int("Ingresar una opcion numerica: ", "Error, Intente otra vez", 1, 4)
+                if len(tabla_elegida['columnas']) != 0:
+                    modificar_tabla(tabla_elegida)
+                else:
+                    print("Error, tabla vacia")
+            else:
+                print("La tabla especificada no existe en este proyecto.")
+                
+        print("\n1-Crear tabla\n2-Modificar tabla\n3-Salir")
+
+        opcion = get_int("Ingresar una opcion numerica: ", 
+                         "Error, Intente otra vez", 1, 3)
     
-    return tabla
+    return proyectos, tabla_tipos
 
 
 def modificar_tabla(tabla: list):
@@ -431,7 +449,7 @@ def modificar_tabla(tabla: list):
 
     opcion = get_int("Ingresar una opcion numerica: ", 
                      "Error, Intente otra vez", 
-                     1, 5) # ANTES: Tenías un límite en 4 pero la opción de salir es 5
+                     1, 5)
 
     while opcion != 5:
         if opcion == 1:
@@ -447,16 +465,19 @@ def modificar_tabla(tabla: list):
             seguro = obtener_respuesta("Seguro quieres eliminar una columna(si/no)?",
                                        "Error, ingrese 'si' o 'no'", "si", "no")
             if seguro == "si":
-                eliminar_columna(tabla)
+                eliminar_columna(tabla)     #problema, no acepta titulos de columna
                 
         print("\n1-Agregar fila\n2-Eliminar fila\n3-Agregar columna\n4-Eliminar columna\n5-Salir")
         opcion = get_int("Ingresar una opcion numerica: ", "Error, Intente otra vez", 1, 5)
 
 
-def mostrar_tabla(tabla: dict) -> None:
+def mostrar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
     """Modificado: Controla el submenú de visualización leyendo las propiedades del dict."""
     
-    # ANTES: len(tabla) != 0
+    nom_tabla = limpiar_texto(input("Tabla a analizar: "))
+    if nom_tabla in proyectos[nombre_proyecto]:
+        tabla = proyectos[nombre_proyecto][nom_tabla]
+
     if len(tabla['columnas']) != 0: 
         print("1-Mostrar tabla completa")
         print("2-Mostrar fila")

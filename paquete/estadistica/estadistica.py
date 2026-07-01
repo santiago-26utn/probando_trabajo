@@ -1,8 +1,16 @@
 from paquete.validacion.validaciones import *
 from paquete.tabla.tablas import *
 
-def contar_valor_columna(lista: list, valor: int) -> None:
-    ""
+def contar_valor_columna(lista: list, valor: int) -> int:
+    """Muestra cuanto se repite un valor en especifico en una columna.
+
+    Args:
+        lista (list): lista de valores.
+        valor (int): valor numeral.
+
+    Returns:
+        int: retorna el valor y el numero de veces que se repite.
+    """
     total_valor = 0
 
     for i in range(len(lista)):
@@ -12,7 +20,14 @@ def contar_valor_columna(lista: list, valor: int) -> None:
     return valor, total_valor
 
 def listar_valores_repetidos(lista: list) -> list:
-    """Modificado: Se corrige la validación para evaluar el elemento real y no el índice."""
+    """lista los valores y cuantas veces se repitieron.
+
+    Args:
+        lista (list): lista de valores.
+
+    Returns:
+        list: lista de valores y su numero de repeticiones.
+    """
     lista_valores = []
     if len(lista) > 0:
         lista_valores.append(lista[0])
@@ -26,21 +41,33 @@ def listar_valores_repetidos(lista: list) -> list:
 
 
 def contar_valores_columna(lista: list) -> None:
-    ""
+    """Muestra valores y el numero de veces que se repitieron en una lista.
+
+    Args:
+        lista (list): lista de valores
+    """
     lista_valores = listar_valores_repetidos(lista)
 
     for valor in lista_valores:
         print(contar_valor_columna(lista, valor))
 
 
-def mostrar_maximo_y_minimo(lista) -> None:
-    ""
+def mostrar_maximo_y_minimo(lista: list) -> None:
+    """En una lista muestra el maximo y el minimo valor.
+
+    Args:
+        lista (list): lista de valores.
+    """
     print(f"El minimo es: {lista[0]}")
     print(f"El maximo es: {lista[-1]}")
 
 
-def mostrar_moda(lista) -> None:
-    ""
+def mostrar_moda(lista: list) -> None:
+    """Muestra la moda de una lista de valores.
+
+    Args:
+        lista (list): lista de valores.
+    """
     lista_valores = listar_valores_repetidos(lista)
     
     if len(lista_valores) == 0:
@@ -48,7 +75,7 @@ def mostrar_moda(lista) -> None:
         return
 
     moda = lista_valores[0]
-    max_frecuencia = contar_valor_columna(lista, moda)[1]
+    max_frecuencia = contar_valor_columna(lista, moda)[1]              
 
     for i in range(1, len(lista_valores)):
         frec_actual = contar_valor_columna(lista, lista_valores[i])[1]
@@ -56,13 +83,19 @@ def mostrar_moda(lista) -> None:
             max_frecuencia = frec_actual
             moda = lista_valores[i]
 
-    print(f"La moda de la columna es: {moda} (Se repite {max_frecuencia} veces)")
+    if max_frecuencia > 1:
+        print(f"La moda de la columna es: {moda} (Se repite {max_frecuencia} veces)")
+    else:
+        print(f"No hay moda, todos los valores se repiten una vez")
 
 
 
 def mostrar_rango(lista: list) -> None:
-    """"""
-    # ANTES: rango = lista[0] - lista[-1]
+    """Muestra el rango restando el minimo al maximo.
+
+    Args:
+        lista (list): lista de valores.
+    """
     rango = lista[-1] - lista[0]
     print(f" El rango es de: {rango}")
 
@@ -70,10 +103,18 @@ def mostrar_rango(lista: list) -> None:
 
 
 def verificar_columna_con_numeros(tabla: dict, columna_elegida: str) -> bool:
-    """Verifica si todas las celdas de la columna seleccionada contienen números."""
+    """Verifica si todas las celdas de la columna seleccionada contienen 
+       números.
+    Args:
+        tabla (dict): tabla de valores.
+        columna_elegida (str): nombre de columna.
+
+    Returns:
+        bool: retorna True si todas las celdas tienen numero o False caso 
+              contrario.
+    """
     indice_columna = obtener_indice_columna(tabla, columna_elegida)
     
-    # Si la columna ni siquiera existe, devolvemos False
     if indice_columna == -1:
         return False
         
@@ -87,9 +128,16 @@ def verificar_columna_con_numeros(tabla: dict, columna_elegida: str) -> bool:
 
 
 def obtener_columna_con_numeros(tabla: dict) -> str:
-    """Pide una columna por consola hasta que el usuario ingrese una que sea numérica."""
+    """Pide una columna por consola hasta que el usuario ingrese una que sea
+       numérica y la retorna.
+    Args:
+        tabla (dict): tabla de valores.
+
+    Returns:
+        str: retorna la columna si solo contiene numeros.
+    """
     columna = retornar_columna(tabla)
-    columna_numeros = verificar_columna_con_numeros(tabla, columna)
+    columna_numeros = verificar_columna_con_numeros(tabla, columna)         #ver si se puede evitar repeticion de codigo
 
     while columna_numeros == False:
         print(" Esa columna no es numérica o contiene texto. Elija otra.")
@@ -99,8 +147,15 @@ def obtener_columna_con_numeros(tabla: dict) -> str:
     return columna
 
 
-def listar_numeros_de_columna(tabla: dict) -> list:
-    """Extrae los datos numéricos puros de la columna elegida para enviárselos a las estadísticas."""
+def crear_lista_numeros_de_columna(tabla: dict) -> list:
+    """Extrae los datos numéricos puros de la columna elegida para 
+       enviárselos a las estadísticas.
+    Args:
+        tabla (dict): tabla de valores.
+
+    Returns:
+        list: retorna una lista con los valores de la columna elegida.
+    """
     columna = obtener_columna_con_numeros(tabla)
     columna_indice = obtener_indice_columna(tabla, columna)
     lista_columna = []
@@ -113,8 +168,15 @@ def listar_numeros_de_columna(tabla: dict) -> list:
 
 
 
-def calcular_promedio_aritmetico(lista: list) -> list:    
-    ""
+def calcular_promedio_aritmetico(lista: list) -> float:    
+    """Calcula el promedio aritmetico de la lista pasada.
+
+    Args:
+        lista (list): lista de numeros
+
+    Returns:
+        float: Retorna un float como promedio aritmetico.
+    """
     total_columna = 0
     total_elementos_columna = len(lista)
 
@@ -127,8 +189,15 @@ def calcular_promedio_aritmetico(lista: list) -> list:
 
 
     
-def calcular_promedio_geometrico(lista: list) -> list:        
-    ""
+def calcular_promedio_geometrico(lista: list) -> float:        
+    """Calcula el promedio geometrico de la lista pasada.
+
+    Args:
+        lista (list): lista de numeros
+
+    Returns:
+        float: Retorna un float como promedio geometrico.
+    """
     indice_columna = 3
     total_columna = 1
     total_elementos_columna = len(lista)
@@ -144,7 +213,11 @@ def calcular_promedio_geometrico(lista: list) -> list:
 
 
 def mostrar_mediana(lista_columna: list) -> None:
-    ""
+    """Calcula y muestra la mediana de una lista.
+
+    Args:
+        lista_columna (list): lista de numeros.
+    """
     cantidad_numeros = len(lista_columna)
 
     if verificar_paridad_con_booleano(cantidad_numeros):
@@ -160,8 +233,16 @@ def mostrar_mediana(lista_columna: list) -> None:
 
     print(f"La mediana es: {numero_mediano}")
 
+
 def retornar_varianza(lista_columna: list) -> int:
-    ""
+    """Calcula la varianza de una lista.
+
+    Args:
+        lista_columna (list): lista de numeros.
+
+    Returns:
+        int: retorna la varianza calculada como int
+    """
     cantidad_numeros = len(lista_columna)
     media = calcular_promedio_aritmetico(lista_columna)
     suma_cuadrados = 0
@@ -171,12 +252,18 @@ def retornar_varianza(lista_columna: list) -> int:
         numero_elevado_a_2 = numero_actual * numero_actual
         suma_cuadrados += numero_elevado_a_2
     
-    # ANTES: retornaba la suma directa sin promediar
     varianza = suma_cuadrados / cantidad_numeros
     return varianza
 
 def retornar_desviacion_estandar(lista_columna: list) -> float|int:
-    ""
+    """Devuelve la desviacion estandar calculada.
+
+    Args:
+        lista_columna (list): lista de numeros.
+
+    Returns:
+        float|int: retorna la desviacion como float o int.
+    """
     varianza = retornar_varianza(lista_columna)
     desviacion_estandar = calcular_raiz(varianza, 2)
 
@@ -184,7 +271,11 @@ def retornar_desviacion_estandar(lista_columna: list) -> float|int:
 
 
 def mostrar_coeficiente_de_variacion(lista_columna: list) -> None:
-    ""
+    """Calcula el coeficiente de variacion y lo muestra.
+
+    Args:
+        lista_columna (list): lista de numeros.
+    """
     desviacion = retornar_desviacion_estandar(lista_columna)
     media = calcular_promedio_aritmetico(lista_columna)
     coeficiente = (desviacion / media) * 100
@@ -193,7 +284,11 @@ def mostrar_coeficiente_de_variacion(lista_columna: list) -> None:
 
 
 def mostrar_promedios(lista: list) -> None:
-    ""
+    """Muestra el promedio aritmetico y geometrico.
+
+    Args:
+        lista (list): lista de numeros.
+    """
     promedio_aritmetico = calcular_promedio_aritmetico(lista)
     promedio_geometrico = calcular_promedio_geometrico(lista)
 
@@ -202,16 +297,21 @@ def mostrar_promedios(lista: list) -> None:
 
 
 def mostrar_medida_tendencia(lista_ordenada):
-    ""
+    ""          #terminar
 
 
 def mostrar_estadisticas(nombre_proyecto: str, proyectos: dict) -> None:
-    ""
+    """Muestra las estadisticas de un diccionario de un proyecto.
+
+    Args:
+        nombre_proyecto (str): nombre de un proyecto.
+        proyectos (dict): diccionario con valores.
+    """
     nom_tabla = limpiar_texto(input("Tabla a analizar: "))
     if nom_tabla in proyectos[nombre_proyecto]:
         tabla = proyectos[nombre_proyecto][nom_tabla]
 
-    lista_datos = listar_numeros_de_columna(tabla)
+    lista_datos = crear_lista_numeros_de_columna(tabla)
     lista_ordenada = ordenar_array(lista_datos)
 
     print("1.Contar valores de columna\n",
