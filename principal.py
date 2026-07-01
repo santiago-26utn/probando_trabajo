@@ -55,16 +55,6 @@ while sistema_activa:
             modificar_variables(proyecto_activo, proyectos)
 
         case 4:
-            """nom_tabla = limpiar_texto(input("Tabla a visualizar: "))
-            if nom_tabla in proyectos[proyecto_activo]:
-                if obtener_respuesta("Desea filtrar(s/n)?",
-                                     "Error, ingrese 's' o 'n'",
-                                     "s", "n") == "s":
-                    mostrar_tabla_prolija(proyectos[proyecto_activo][nom_tabla], separar_por_comas(input("Columnas: ")))
-                else: 
-                    mostrar_tabla_prolija(proyectos[proyecto_activo][nom_tabla])
-            else: 
-                print("No encontrada.")"""
             mostrar_tabla(proyecto_activo, proyectos)
 
         case 5:

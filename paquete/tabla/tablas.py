@@ -226,19 +226,19 @@ def retornar_columna(tabla: list) -> str:
 
 def seleccionar_columnas_tabla(tabla: dict) -> list:
     """Modificado: Ahora extrae las columnas seleccionadas como sublistas puras."""
-    cargar = obtener_respuesta("Quiere seleccionar una columna de datos?(si/no): ", 
-                               "Error, solo ingresar 'si' o 'no'", 
-                               "si", "no")
+    cargar = obtener_respuesta("Quiere seleccionar una columna de datos?(s/n): ", 
+                               "Error, solo ingresar 's' o 'n'", 
+                               "s", "n")
     lista_seleccionadas = [] 
 
-    while cargar == "si":
+    while cargar == "s":
         columna = retornar_columna(tabla)
         # Guardamos la columna obtenida de la tabla
         lista_seleccionadas.append(obtener_columna_por_nombre(tabla, columna))
 
         cargar = obtener_respuesta("Quiere seleccionar otra columna?(s/n): ",
-                                   "Error, ingrese 'si' o 'no'", 
-                                   "si", "no")
+                                   "Error, ingrese 's' o 'n'", 
+                                   "s", "n")
 
     return lista_seleccionadas
 
@@ -246,19 +246,23 @@ def mostrar_columnas_seleccionadas(tabla: dict) -> None:
     """Modificado: Muestra las columnas elegidas alineadas horizontalmente."""
     columnas = seleccionar_columnas_tabla(tabla)
     
-    # Si el usuario no eligió ninguna columna, evitamos que rompa
-    if len(columnas) == 0:
-        print("No se seleccionó ninguna columna.")
-        return
+    if len(columnas) != 0:
         
-    cantidad_filas = len(columnas[0])
+        cantidad_filas = len(columnas[0])
+        
+        print("-" * (16 * len(columnas)))
 
-    print("\n--- COLUMNAS SELECCIONADAS ---")
-    for fila in range(cantidad_filas):
-        for columna in range(len(columnas)):
-            print(f"{str(columnas[columna][fila]):<15}", end="")
+        for fila in range(cantidad_filas):
+            print("| ", end="")
+            for columna in range(len(columnas)):
+                print(f"{str(columnas[columna][fila]):^12} | ", end="")
+            print()
+            
+        print("-" * (16 * len(columnas)))
         print()
-    print()
+
+    else:
+        print("No se seleccionó ninguna columna.")
 
 
 #d.3-mostrar fila
@@ -323,55 +327,18 @@ def filtrar_columnas(tabla: dict) -> None:
     valor_buscado = input("Ingrese el valor a filtrar: ")
     indice_columna = obtener_indice_columna(tabla, columna)
 
-    # 1. Imprimir títulos de columnas (Formato idéntico a mostrar_tabla_completa)
     print("|", end="")
     for col in tabla['columnas']:
         print(f" {col:^10} |", end="")
     print()
     print("-" * (13 * len(tabla['columnas'])))
 
-    # 2. Filtrar e imprimir las filas que coincidan usando el mismo formato de celdas
     for fila in range(len(tabla['matriz'])):
         if str(tabla['matriz'][fila][indice_columna]) == valor_buscado:
             print("|", end="")
             for dato in tabla['matriz'][fila]:
-                # Usamos el mismo formateo centrado ':^10' para mantener la alineación de la tabla
                 print(f" {str(dato):^10} |", end="")
             print()
-
-
-################
-#d.4 filtrar_columnas
-def obtener_indice_columna0(tabla: list, columna: str) -> int:
-    ""
-    indice = -1
-
-    for i in range(len(tabla[0])):
-        if tabla[0][i] == columna:
-            indice = i
-
-    return indice
-
-def filtrar_columnas0(tabla: list) -> None:
-    ""
-    columna = retornar_columna(tabla)
-
-    valor_buscado = input("Ingrese el valor a filtrar: ")
-
-    indice_columna = obtener_indice_columna(tabla, columna)
-
-    mostrar_tabla_completa([tabla[0]])
-
-    for fila in range(1, len(tabla)):
-        if str(tabla[fila][indice_columna]) == valor_buscado:
-
-                for dato in tabla[fila]:
-                    print(f"{dato:<15}", end="")
-
-                print()
-
-
-
 
 
 def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:    
@@ -500,17 +467,17 @@ def modificar_tabla(tabla: list):
         if opcion == 1:
             agregar_fila(tabla)
         elif opcion == 2:
-            seguro = obtener_respuesta("Seguro quieres eliminar una fila(si/no)?",
-                                       "Error, ingrese 'si' o 'no'", "si", "no")
-            if seguro == "si":
+            seguro = obtener_respuesta("Seguro quieres eliminar una fila(s/n)?",
+                                       "Error, ingrese 's' o 'n", "s", "n")
+            if seguro == "s":
                 eliminar_fila(tabla)
         elif opcion == 3:
             agregar_columna(tabla)
         elif opcion == 4:
-            seguro = obtener_respuesta("Seguro quieres eliminar una columna(si/no)?",
-                                       "Error, ingrese 'si' o 'no'", "si", "no")
-            if seguro == "si":
-                eliminar_columna(tabla)     #problema, no acepta titulos de columna
+            seguro = obtener_respuesta("Seguro quieres eliminar una columna(s/n)?",
+                                       "Error, ingrese 's' o 'n'", "s", "n")
+            if seguro == "s":
+                eliminar_columna(tabla)
                 
         print("\n1-Agregar fila\n2-Eliminar fila\n3-Agregar columna\n4-Eliminar columna\n5-Salir")
         opcion = get_int("Ingresar una opcion numerica: ", "Error, Intente otra vez", 1, 5)

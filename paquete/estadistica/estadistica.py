@@ -296,18 +296,31 @@ def mostrar_promedios(lista: list) -> None:
     print(f"El promedio aritmetico es: {promedio_geometrico}")
 
 
+def mostrar_cuartil(lista: list, medida: int):
+    n = len(lista)
+    pos = int(medida * (n + 1) / 4)
+    print("Q", medida, "=", lista[pos - 1])
+
+
+def mostrar_decil(lista: list, medida: int):
+    n = len(lista)
+    pos = int(medida * (n + 1) / 10)
+    print("D", medida, "=", lista[pos - 1])
+
+    
 def mostrar_medida_tendencia(lista_ordenada: list):
-    ""          #terminar
-
-
-def mostrar_quartiles(lista: list):
     ""
+    medida_quartil = get_int("Ingrese una medida entre 1 y 3",
+                             "Error, ingrese un entero entre 1 y 3",
+                             1, 3)
+    medida_decil = get_int("Ingrese una medida entre 1 y 10",
+                             "Error, ingrese un entero entre 1 y 10",
+                             1, 10)
 
-def mostrar_deciles(lista: list):
-    ""
+    mostrar_cuartil(lista_ordenada, medida_quartil)
+    mostrar_decil(lista_ordenada, medida_decil)
 
-def mostrar_percentil(lista: list):
-    ""
+
 
 
 def mostrar_estadisticas(nombre_proyecto: str, proyectos: dict) -> None:
