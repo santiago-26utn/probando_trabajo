@@ -490,27 +490,7 @@ def mostrar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
     if nom_tabla in proyectos[nombre_proyecto]:
         tabla = proyectos[nombre_proyecto][nom_tabla]
 
-    if len(tabla['columnas']) != 0: 
-        print("1-Mostrar tabla completa")
-        print("2-Mostrar fila")
-        print("3-Seleccionar columnas")
-        print("4-Filtrar")
-        print("5-Salir de mostrar tabla")
-
-        opcion = get_int("Ingresar una opcion numerica: ", 
-                         "Error, Intente otra vez", 
-                         1, 5)
-
-        while opcion != 5:
-            if opcion == 1:
-                mostrar_tabla_completa(tabla)
-            elif opcion == 2:
-                mostrar_fila_tabla(tabla)
-            elif opcion == 3:
-                mostrar_columnas_seleccionadas(tabla)
-            elif opcion == 4:
-                filtrar_columnas(tabla)
-            
+        if len(tabla['columnas']) != 0: 
             print("1-Mostrar tabla completa")
             print("2-Mostrar fila")
             print("3-Seleccionar columnas")
@@ -520,5 +500,27 @@ def mostrar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
             opcion = get_int("Ingresar una opcion numerica: ", 
                             "Error, Intente otra vez", 
                             1, 5)
+
+            while opcion != 5:
+                if opcion == 1:
+                    mostrar_tabla_completa(tabla)
+                elif opcion == 2:
+                    mostrar_fila_tabla(tabla)
+                elif opcion == 3:
+                    mostrar_columnas_seleccionadas(tabla)
+                elif opcion == 4:
+                    filtrar_columnas(tabla)
+                
+                print("1-Mostrar tabla completa")
+                print("2-Mostrar fila")
+                print("3-Seleccionar columnas")
+                print("4-Filtrar")
+                print("5-Salir de mostrar tabla")
+
+                opcion = get_int("Ingresar una opcion numerica: ", 
+                                "Error, Intente otra vez", 
+                                1, 5)
+        else:
+            print("¡Tabla vacía!")
     else:
-        print("¡Tabla vacía!")
+        print("No existe tabla con ese nombre!")
