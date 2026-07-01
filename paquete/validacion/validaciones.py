@@ -46,58 +46,19 @@ def convertir_a_minuscula(texto: str) -> str:
 
     return resultado_str
 
-def es_par_recursivo(n: int) -> bool:
-    res = False
-
-    if n == 0:
-        res = True
-    elif n == 1:
-        res = False
-    elif n < 0:
-        res = es_par_recursivo(-n)
-    else:
-        res = es_par_recursivo(n - 2)
-
-    return res
-
-def es_multiplo_recursivo(a: int, b: int) -> bool:
-    res = False
-
-    if b == 0:
-        res = False
-    elif a < 0:
-        res = es_multiplo_recursivo(-a, b if b > 0 else -b)
-    elif b < 0:
-        res = es_multiplo_recursivo(a, -b)
-    elif a == 0:
-        res = True
-    elif a < b:
-        res = False
-    else:
-        res = es_multiplo_recursivo(a - b, b)
-
-    return res
-
-def es_primo_recursivo(n: int, divisor: int = None) -> bool:
-    res = False
-
-    if n <= 1:
-        res = False
-    else:
-        div_actual = divisor
-        if div_actual is None:
-            div_actual = n - 1
-
-        if div_actual == 1:
-            res = True
-        elif es_multiplo_recursivo(n, div_actual):
-            res = False
-        else:
-            res = es_primo_recursivo(n, div_actual - 1)
-
-    return res
 
 def validar_rango_recursivo(valor: float, minimo: float, maximo: float) -> bool:
+    """Valida el rango de forma recursiva
+
+    Args:
+        valor (float): valor ingresado.
+        minimo (float): valor minimo.
+        maximo (float): valor maximo.
+
+    Returns:
+        bool: retorna True si el valor es aceptado dentro del rango, 
+                caso contrario False.
+    """
     res = True
     if valor < minimo or valor > maximo:
         res = False
@@ -121,6 +82,14 @@ def es_cadena_numerica(entrada: str) -> bool:
     return res
 
 def leer_entero_validado(mensaje: str) -> int:
+    """verifica si la cadena es un entero.
+
+    Args:
+        mensaje (str): mensaje
+
+    Returns:
+        int: retorna un entero.
+    """
     entrada = limpiar_texto(input(mensaje))
     res_entero = 0
 
@@ -131,10 +100,6 @@ def leer_entero_validado(mensaje: str) -> int:
         res_entero = leer_entero_validado(mensaje)
 
     return res_entero
-
-
-
-
 
 
 
@@ -238,6 +203,15 @@ def get_int(mensaje: str,
 
 
 def calcular_raiz(numero: float, indice: int) -> float|int:  
+    """Calcula una raiz de forma recursiva.
+
+    Args:
+        numero (float): numero a calcular raiz.
+        indice (int): indice de la raiz.
+
+    Returns:
+        float|int: Retorna un int o float dependiendo del calculo.
+    """
     aproximacion = numero
 
     for _ in range(8):
@@ -298,14 +272,28 @@ def verificar_paridad_con_booleano(numero: int) -> bool:
 
 
 def hacer_mayuscula(caracter: str) -> str:
-    ""
+    """convierte a mayuscula el caracter pasado como parametro.
+
+    Args:
+        caracter (str): caracter.
+
+    Returns:
+        str: retorna el caracter transformado.
+    """
 
     codigo = ord(caracter)
 
     return chr(codigo - 32)
 
 def verificar_mayuscula(dato_ingresado: str) -> str:
-    ""
+    """Verifica si el dato ingresado tiene mayusculas.
+
+    Args:
+        dato_ingresado (str): cadena de texto.
+
+    Returns:
+        str: retorna la cadena de texto transformada.
+    """
 
     letra_verificada = ""
 
@@ -318,14 +306,28 @@ def verificar_mayuscula(dato_ingresado: str) -> str:
 
 
 def hacer_minuscula(caracter: str) -> str:
-    ""
+    """convierte a minuscula el caracter pasado como parametro.
+
+    Args:
+        caracter (str): caracter.
+
+    Returns:
+        str: retorna el caracter transformado.
+    """
 
     codigo = ord(caracter)
 
     return chr(codigo + 32)
 
 def verificar_minuscula(dato_ingresado: str, posicion_letra: int) -> str:
-    ""
+    """Verifica si el dato ingresado tiene minusculas.
+
+    Args:
+        dato_ingresado (str): cadena de texto.
+
+    Returns:
+        str: retorna la cadena de texto transformada.
+    """
 
     letra_verificada = ""
 
@@ -336,8 +338,15 @@ def verificar_minuscula(dato_ingresado: str, posicion_letra: int) -> str:
 
     return letra_verificada
 
-def transformar_dato(dato_ingresado: any) -> str|float:
-    ""
+def transformar_dato(dato_ingresado: any) -> str|int:
+    """Transforma el dato pasado para que sea legible.
+
+    Args:
+        dato_ingresado (any): cadena de texto o numero
+
+    Returns:
+        str|int: retorna una cadena de texto o un entero.
+    """
     dato_numerico = 0
     dato_transformado = ""
 

@@ -3,8 +3,11 @@ from paquete.validacion.validaciones import *
 
 
 def elegir_tipo_dato() -> str:        
-    ""  
+    """Permite elegir el tipo de dato que tendra una columna.
 
+    Returns:
+        str: retorna un texto.
+    """
 
     print("1-Dato tipo texto")
     print("2-Dato tipo numerico")
@@ -20,8 +23,16 @@ def elegir_tipo_dato() -> str:
 
     return tipo_dato
 
-def agregar_dato(tipo_dato: str) -> any:
-    ""
+
+def agregar_dato(tipo_dato: str) -> int | str:
+    """Permite ingresar un texto según el tipo de dato.
+
+    Args:
+        tipo_dato (str): indica el tipo de dato
+
+    Returns:
+        int | str: Retorna un texto o un int
+    """
     if tipo_dato == "texto":
         dato = input("Agregar dato: ")      
     elif tipo_dato == "vacio":
@@ -33,21 +44,30 @@ def agregar_dato(tipo_dato: str) -> any:
     return dato
 
 def cargar_fila(tabla: dict) -> list:
-    ""
+    """Carga una fila con datos.
+
+    Args:
+        tabla (dict): tabla con datos.
+
+    Returns:
+        list: retorna una lista con los datos para la fila.
+    """
     fila = []
 
     if len(tabla['columnas']) == 0:
         print("Lista vacia, ingresara nombres de columnas")
-        cantidad_columnas = get_int("Ingrese la cantidad de columnas que desee: ",
-                                    "Error, ingrese entero mayor a 0",
-                                    1, 100)
+        cantidad_columnas = get_int(
+                        "Ingrese la cantidad de columnas que desee: ",
+                        "Error, ingrese entero mayor a 0",
+                        1, 100)
         for i in range(cantidad_columnas):
             dato = agregar_dato("texto")
             dato = transformar_dato(dato)
             tabla['columnas'].append(dato) 
     else:
         for i in range(len(tabla['columnas'])):
-            print(f"Columna [{tabla['columnas'][i]}] (Tipo esperado: {tabla['tipos'][i]})")
+            print(f"Columna [{tabla['columnas'][i]}]") 
+            print(f"Tipo esperado de dato: {tabla['tipos'][i]})")    
             dato = agregar_dato(tabla['tipos'][i])
             fila.append(dato)
 
@@ -58,13 +78,21 @@ def cargar_fila(tabla: dict) -> list:
 
 
 def crear_tabla(columnas: int, filas: int) -> list:
-    ""
+    """Crea una tabla con cierta cantidad de columnas y filas.
+
+    Args:
+        columnas (int): cantidad de columnas.
+        filas (int): cantidad de filas.
+
+    Returns:
+        list: retorna la tabla creada
+    """
     matriz_tabla = []
 
     for i in range(filas):
         fila = []
         for j in range(columnas):
-            fila += [None]
+            fila += ""
         matriz_tabla += [fila]
 
     return matriz_tabla
@@ -74,44 +102,58 @@ def crear_tabla(columnas: int, filas: int) -> list:
 
 
 def agregar_fila(tabla: dict) -> None:
-    """Modificado: Revisa la longitud de 'columnas' y añade a 'filas'."""
+    """Permite agregar una fila a la tabla.
+
+    Args:
+        tabla (dict): tabla de datos.
+    """
     nueva_fila = []
     for i in range(len(tabla['columnas'])):
-        nueva_fila.append(None)
+        nueva_fila.append("")
     
     tabla['matriz'].append(nueva_fila)
     
 
 def agregar_columna(tabla: dict) -> None:
-    """Modificado: Añade la columna y registra su tipo correspondiente."""
+    """Permite agregar una columna con nombre a la tabla.
+
+    Args:
+        tabla (dict): tabla de datos.
+    """
     nombre_columna = input("Ingrese nombre para nueva columna: ")
     tabla['columnas'].append(nombre_columna)
     
-    print(f"Defina el tipo de datos para la nueva columna '{nombre_columna}':")
+    print(f"Defina tipo de datos para la nueva columna '{nombre_columna}':")
     tipo_nueva_col = elegir_tipo_dato()
     tabla['tipos'].append(tipo_nueva_col)
 
     for i in range(len(tabla['matriz'])):
-        tabla['matriz'][i].append(None)
+        tabla['matriz'][i].append("")
             
 
 def eliminar_fila(tabla: dict) -> None:
-    """Modificado: Remueve una fila interna de la lista tabla['matriz']."""
+    """Elimina una fila de la tabla.
+
+    Args:
+        tabla (dict): tabla de datos.
+    """
 
     fila = int(input("Ingrese número de fila a eliminar: "))
-
 
     if 0 <= fila < len(tabla['matriz']):
 
         tabla['matriz'].pop(fila)
 
     else:
-
         print("Índice de fila inválido.")
 
 
 def eliminar_columna(tabla: dict) -> None:
-    """Modificado: Elimina la columna de los metadatos, de los tipos y de la matriz."""
+    """Elimina una columna, junto a sus datos y tipo de datos.
+
+    Args:
+        tabla (dict): tabla de datos.
+    """
     nombre_columna = input("Ingrese nombre para eliminar columna: ")
     
     indice_columna = obtener_indice_columna(tabla, nombre_columna)
@@ -130,7 +172,11 @@ def eliminar_columna(tabla: dict) -> None:
 
 #d.1-mostrar tabla completa
 def mostrar_tabla_completa(tabla: dict) -> None:
-    """Modificado: Imprime por separado la cabecera ('columnas') y el cuerpo ('matriz')."""
+    """Muestra la tabla completa.
+
+    Args:
+        tabla (dict): tabla de datos.
+    """
     print("|", end="")
     for col in tabla['columnas']:
         print(f" {col:^10} |", end="")
@@ -146,7 +192,15 @@ def mostrar_tabla_completa(tabla: dict) -> None:
 
 
 def obtener_indice_columna(tabla: dict, nombre_columna: str) -> int:
-    """Retorna el índice de la columna dentro del dict. Si no existe, devuelve -1."""
+    """Permite obtener el indice de la columna buscandola por el nombre.
+
+    Args:
+        tabla (dict): tabla de datos.
+        nombre_columna (str): nombre de la columna
+
+    Returns:
+        int: retorna el indice de la columna o -1 si no existe.
+    """
     indice = -1
     for i in range(len(tabla['columnas'])):
         if tabla['columnas'][i] == nombre_columna:
@@ -154,24 +208,49 @@ def obtener_indice_columna(tabla: dict, nombre_columna: str) -> int:
     return indice
 
 
-
 def obtener_columna_por_indice(tabla: dict, numero_columna: int) -> list:   
-    """Modificado: Recorre las filas puras guardando el valor de la columna."""
+    """Permite obtener la columna a través de su indice.
+
+    Args:
+        tabla (dict): tabla de datos.
+        numero_columna (int): numero de columna.
+
+    Returns:
+        list: retorna una lista con los datos de la columna encontrada.
+    """
     lista_columna = []
     for i in range(len(tabla['matriz'])):
         lista_columna.append(tabla['matriz'][i][numero_columna])
     return lista_columna
 
+
 def obtener_columna_por_nombre(tabla: dict, columna: str) -> list:   
-    """Modificado: Revisa las claves correspondientes."""
+    """Obtiene una columna por su nombre.
+
+    Args:
+        tabla (dict): tabla de datos.
+        columna (str): nombre de columna.
+
+    Returns:
+        list: retorna una lista de los datos de la columna.
+    """
     lista_columna = []
     for i in range(len(tabla['columnas'])):
         if tabla['columnas'][i] == columna:
             lista_columna = obtener_columna_por_indice(tabla, i)
     return lista_columna
 
-def mostrar_columna(tabla: dict, columna_elegida: str):
-    """Modificado: Busca en la lista de metadatos 'columnas'."""
+
+def mostrar_columna(tabla: dict, columna_elegida: str) -> bool:#funcion que ya no va? ver en otros modulos
+    """Verifica si existe la columna.
+
+    Args:
+        tabla (dict): tabla de datos.
+        columna_elegida (str): nombre de columna elegida.
+
+    Returns:
+        bool: retorna True si existe la columna, False caso contrario.
+    """
     total_columnas = len(tabla['columnas']) 
     posicion_columna = 0
     columna_encontrada = False
@@ -186,8 +265,17 @@ def mostrar_columna(tabla: dict, columna_elegida: str):
     return columna_encontrada
 
 
-def verificar_columnas(tabla: dict, columna_elegida: str) -> bool:
-    """Modificado: Busca en la lista de metadatos 'columnas'."""
+def verificar_columnas(tabla: dict, columna_elegida: str) -> bool:      
+    """Verifica si existe la columna.
+
+    Args:
+        tabla (dict): tabla de datos.
+        columna_elegida (str): nombre de columna elegida.
+
+    Returns:
+        bool: retorna True si existe la columna, False caso contrario.
+    """
+    
     total_columnas = len(tabla['columnas'])
     posicion_columna = 0
     columna_encontrada = False
@@ -205,7 +293,14 @@ def verificar_columnas(tabla: dict, columna_elegida: str) -> bool:
 
 
 def retornar_columna(tabla: list) -> str:   
-    ""
+    """Pide repetidamente el nombre de una columna existente.
+
+    Args:
+        tabla (list): tabla de datos.
+
+    Returns:
+        str: retorna el nombre de una columna.
+    """
     columna = input("Elija columna: ")
     columna_existente = verificar_columnas(tabla, columna)
 
@@ -215,16 +310,27 @@ def retornar_columna(tabla: list) -> str:
 
     return columna
 
+
 def seleccionar_columnas_tabla(tabla: dict) -> list:
-    """Modificado: Ahora extrae las columnas seleccionadas como sublistas puras."""
-    cargar = obtener_respuesta("Quiere seleccionar una columna de datos?(s/n): ", 
-                               "Error, solo ingresar 's' o 'n'", 
-                               "s", "n")
+    """Hace una lista de columnas seleccionadas de la tabla.
+
+    Args:
+        tabla (dict): tabla de datos.
+
+    Returns:
+        list: retorna una lista con los nombres de las columnas elegidas.
+    """
+    cargar = obtener_respuesta(
+                "Quiere seleccionar una columna de datos?(s/n): ",
+                "Error, solo ingresar 's' o 'n'", 
+                "s", "n")
+    
     lista_seleccionadas = [] 
 
     while cargar == "s":
         columna = retornar_columna(tabla)
-        lista_seleccionadas.append(obtener_columna_por_nombre(tabla, columna))
+        lista_seleccionadas.append(obtener_columna_por_nombre(tabla, 
+                                                              columna))
 
         cargar = obtener_respuesta("Quiere seleccionar otra columna?(s/n): ",
                                    "Error, ingrese 's' o 'n'", 
@@ -232,8 +338,13 @@ def seleccionar_columnas_tabla(tabla: dict) -> list:
 
     return lista_seleccionadas
 
+
 def mostrar_columnas_seleccionadas(tabla: dict) -> None:
-    """Modificado: Muestra las columnas elegidas alineadas horizontalmente."""
+    """Muestra el contenido de las columnas seleccionadas.
+
+    Args:
+        tabla (dict): tabla de datos.
+    """
     columnas = seleccionar_columnas_tabla(tabla)
     
     if len(columnas) != 0:
@@ -256,8 +367,17 @@ def mostrar_columnas_seleccionadas(tabla: dict) -> None:
 
 
 def verificar_filas(tabla: dict) -> int:
-    """Modificado: El rango válido ahora va desde 0 hasta la cantidad de 'filas' - 1."""
-    fila = get_int_simple("Elija una fila (por índice numérico): ", "Error, Ingrese número entero positivo")
+    """Pide repetidamente un numero de fila hasta que se
+        le pase un numero de fila existente.
+
+    Args:
+        tabla (dict): tabla de datos.
+
+    Returns:
+        int: retorna el número de fila existente ingresado.
+    """
+    fila = get_int_simple("Elija una fila (por índice numérico): ", 
+                          "Error, Ingrese número entero positivo")
 
     total_filas = len(tabla['matriz']) - 1
     
@@ -275,40 +395,35 @@ def verificar_filas(tabla: dict) -> int:
     return fila
 
 
-def obtener_fila_tabla(tabla: dict) -> int:
-    """
-    Modificado: Corregido el error de tu código base. 
-    Esta función debe retornar el ÍNDICE validado de la fila elegida.
-    """
+def obtener_fila_tabla(tabla: dict) -> int: #ya no va
+    
     fila_idx = verificar_filas(tabla)
     return fila_idx
 
 
-def mostrar_fila_tabla0(tabla: list) -> None:
-    ""
-
-    fila = obtener_fila_tabla(tabla)
-
-    for dato in tabla[fila]:
-        print(f"{dato:<15}", end="")
-    print()
-
-
 def mostrar_fila_tabla(tabla: dict) -> None:
-    """Modificado: Corrige la lógica para mostrar los títulos y la fila seleccionada."""
-    fila_idx = verificar_filas(tabla)
+    """Muestra una fila especifica de la tabla.
+
+    Args:
+        tabla (dict): tabla de datos.
+    """
+    fila = verificar_filas(tabla)
     
     for col in tabla['columnas']:
         print(f"{col:<15}", end="")
     print("\n" + "-" * (15 * len(tabla['columnas'])))
     
-    for dato in tabla['matriz'][fila_idx]:
+    for dato in tabla['matriz'][fila]:
         print(f"{dato:<15}", end="")
     print()
 
 
 def filtrar_columnas(tabla: dict) -> None:
-    """Modificado: Filtra directo sobre la clave 'matriz' manteniendo el diseño visual."""
+    """Filtra datos a través de columnas.
+
+    Args:
+        tabla (dict): tabla de datos.
+    """
     columna = retornar_columna(tabla)
     valor_buscado = input("Ingrese el valor a filtrar: ")
     indice_columna = obtener_indice_columna(tabla, columna)
@@ -328,7 +443,15 @@ def filtrar_columnas(tabla: dict) -> None:
 
 
 def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:    
+    """Menu para crear, modificar o guardar una tabla.
 
+    Args:
+        nombre_proyecto (str): nombre del proyecto actual.
+        proyectos (dict): diccionario actual.
+
+    Returns:
+        dict: retorna un diccionario.
+    """
     if nombre_proyecto not in proyectos: 
         proyectos[nombre_proyecto] = {}
 
@@ -365,7 +488,7 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                 for f in range(cant_f):
                     fila = []
                     for c in range(len(columnas)):
-                        valor_celda = None            
+                        valor_celda = ""            
                         fila.append(valor_celda)
                     matriz.append(fila)
                     
@@ -424,7 +547,7 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                     archivo_csv.write(linea_fila)
 
             archivo_csv.close()
-            print("¡Todas las tablas del proyecto fueron guardadas en archivos/tablas.csv!")
+            print("¡Todas las tablas del proyecto fueron guardadas")
                 
         print("\n1-Crear tabla\n2-Modificar tabla\n3-Guardar tabla\n4-Salir")
 
@@ -435,6 +558,11 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
 
 
 def modificar_tabla(tabla: list):
+    """Menu para modificar la tabla actual.
+
+    Args:
+        tabla (list): tabla de datos.
+    """
     print("1-Agregar fila")
     print("2-Eliminar fila")
     print("3-Agregar columna")
@@ -449,24 +577,39 @@ def modificar_tabla(tabla: list):
         if opcion == 1:
             agregar_fila(tabla)
         elif opcion == 2:
-            seguro = obtener_respuesta("Seguro quieres eliminar una fila(s/n)?",
-                                       "Error, ingrese 's' o 'n", "s", "n")
+            seguro = obtener_respuesta(
+                        "Seguro quieres eliminar una fila(s/n)?",
+                        "Error, ingrese 's' o 'n", "s", "n")
             if seguro == "s":
                 eliminar_fila(tabla)
         elif opcion == 3:
             agregar_columna(tabla)
         elif opcion == 4:
-            seguro = obtener_respuesta("Seguro quieres eliminar una columna(s/n)?",
-                                       "Error, ingrese 's' o 'n'", "s", "n")
+            seguro = obtener_respuesta(
+                            "Seguro quieres eliminar una columna(s/n)?",
+                            "Error, ingrese 's' o 'n'", "s", "n")
             if seguro == "s":
                 eliminar_columna(tabla)
                 
-        print("\n1-Agregar fila\n2-Eliminar fila\n3-Agregar columna\n4-Eliminar columna\n5-Salir")
-        opcion = get_int("Ingresar una opcion numerica: ", "Error, Intente otra vez", 1, 5)
+        
+        print("1-Agregar fila")
+        print("2-Eliminar fila")
+        print("3-Agregar columna")
+        print("4-Eliminar columna")
+        print("5-Salir de modificar tabla")
+        opcion = get_int("Ingresar una opcion numerica: ", 
+                         "Error, Intente otra vez", 
+                         1, 5)
 
 
 def mostrar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
-    """Modificado: Controla el submenú de visualización leyendo las propiedades del dict."""
+    """Menu para mostrar la tabla de diferentes formas y atraves de
+       distintos filtros.
+
+    Args:
+        nombre_proyecto (str): nombre del proyecto actual.
+        proyectos (dict): diccionario actual.
+    """
     
     nom_tabla = limpiar_texto(input("Tabla a analizar: "))
     if nom_tabla in proyectos[nombre_proyecto]:

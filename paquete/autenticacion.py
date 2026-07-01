@@ -1,7 +1,15 @@
 from paquete.validacion.validaciones import limpiar_texto
 
 def separar_linea(cadena: str, separador: str) -> tuple:
+    """_summary_
 
+    Args:
+        cadena (str): _description_
+        separador (str): _description_
+
+    Returns:
+        tuple: _description_
+    """
     usuario = ""
     contrasenia = ""
     encontro_separador = False
@@ -18,6 +26,8 @@ def separar_linea(cadena: str, separador: str) -> tuple:
     return limpiar_texto(usuario), limpiar_texto(contrasenia)
 
 def registrar_usuario():
+    """Registra a un usuario.
+    """
     # 1. Aseguramos que el archivo exista en la carpeta 'archivos'
     creador = open("probando_trabajo/paquete/archivos/usuarios.csv", "a")
     creador.close()
@@ -52,6 +62,12 @@ def registrar_usuario():
 
 
 def iniciar_sesion() -> bool:
+    """Permite iniciar sesion si ingresa un usuario existente.
+
+    Returns:
+        bool: Si se ingresa un usuario existente retorna True,
+            caso contrario False.
+    """
     print("\n--- INICIO DE SESIÓN ---")
     
     usuario = limpiar_texto(input("Usuario: "))
