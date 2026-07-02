@@ -109,9 +109,11 @@ def agregar_fila(tabla: dict) -> None:
     """
     nueva_fila = []
     for i in range(len(tabla['columnas'])):
-        nueva_fila.append("")
+        dato = input("Ingrese filas: ")
+        nueva_fila.append(dato)
     
     tabla['matriz'].append(nueva_fila)
+    
     
 
 def agregar_columna(tabla: dict) -> None:
@@ -494,7 +496,7 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                 print("¡Tabla Creada!")
 
         elif opcion == 2:
-            nom_tabla = limpiar_texto(input("Ingrese el nombre de la tabla a modificar: "))
+            nom_tabla = limpiar_texto(input("Ingrese el nombre de tabla a modificar: "))
             
             if nom_tabla in proyectos[nombre_proyecto]:
                 tabla_elegida = proyectos[nombre_proyecto][nom_tabla]
@@ -650,7 +652,7 @@ def mostrar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
 def cargar_tablas_desde_csv(proyectos, nombre_proyecto):
 
     """
-    Lee el archivo 'tablas.csv' y carga los datos guardados en la memoria.
+     Lee el archivo 'tablas.csv' y carga los datos guardados en la memoria.
     
     Busca las líneas que empiezan con 'Tabla: ' para identificar el nombre,
     crea el espacio en el diccionario, y luego guarda la primera línea como
@@ -665,33 +667,50 @@ def cargar_tablas_desde_csv(proyectos, nombre_proyecto):
     """
 
     ruta = "paquete/archivos/tablas.csv"
-    proyectos [nombre_proyecto] = {}
+    
+    if nombre_proyecto not in proyectos:
+        proyectos[nombre_proyecto] = {}
+        
     archivo = open(ruta, "r")
     nom_tabla_actual = ""
     
     for linea in archivo:
+        
+        if len(linea) > 0 and linea[len(linea)-1] == "\n":
+            linea = linea[:-1]
+            
         if len(linea) > 0:
-            if linea[len(linea)-1] == "\n":
-                linea = linea[:-1]
+            
+            if len(linea) >= 7 and linea[0:7] == "Tabla: ":
+                nom_tabla_actual = linea[7:]
+                proyectos[nombre_proyecto][nom_tabla_actual] = {"columnas": [], 
+                                                                "tipos": [], 
+                                                                "matriz": []}
+        
+            elif nom_tabla_actual != "":
+                datos = []
+                palabra_actual = ""
                 
-        if len(linea) > 0:
-            if linea != ",":
-                if len(linea) >= 7:
-                    if linea[0:7] == "Tabla: ":
-                        nom_tabla_actual = linea[7:]
-                        
-                        if nom_tabla_actual in proyectos[nombre_proyecto]:
-                            print("Aviso: Se encontraron datos repetidos para la tabla:", nom_tabla_actual)
-                        
-                        proyectos[nombre_proyecto][nom_tabla_actual] = {"columnas": [], "tipos": [], "matriz": []}
+                for caracter in linea:
+                    if caracter == ",":
+                        datos.append(palabra_actual)
+                        palabra_actual = ""
+                    else:
+                        palabra_actual = palabra_actual + caracter
                 
-                if nom_tabla_actual != "":
-                    if len(linea) < 7 or linea[0:7] != "Tabla: ":
-                        datos = linea.split(",")
-                        if len(proyectos[nombre_proyecto][nom_tabla_actual]["columnas"]) == 0:
-                            proyectos[nombre_proyecto][nom_tabla_actual]["columnas"] = datos
-                        else:
-                            proyectos[nombre_proyecto][nom_tabla_actual]["matriz"].append(datos)
-                            
+                
+                datos.append(palabra_actual)
+ 
+                if len(proyectos[nombre_proyecto][nom_tabla_actual]["columnas"]) == 0:
+                    proyectos[nombre_proyecto][nom_tabla_actual]["columnas"] = datos
+                else:
+                    es_vacia = True
+                    for d in datos:
+                        if d != "":
+                            es_vacia = False
+                    
+                    if es_vacia == False:
+                        proyectos[nombre_proyecto][nom_tabla_actual]["matriz"].append(datos)
+                        
     archivo.close()
     return proyectos
