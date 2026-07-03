@@ -34,10 +34,13 @@ def agregar_dato(tipo_dato: str) -> int | str:
         int | str: Retorna un texto o un int
     """
     if tipo_dato == "texto":
-        dato = input("Agregar dato: ")      
+        dato = get_length("Ingrese un dato tipo texto: ",
+                          "Error, no numeros ni caracteres especiales",
+                          1, 16)
+        dato = transformar_dato(dato)    
     elif tipo_dato == "numerico":
-        dato = get_float("Ingresar número entero positivo", 
-                         "Error, Ingrese número entero positivo",
+        dato = get_float("Ingresar número entero positivo: ", 
+                         "Error, Ingrese número entero positivo: ",
                          0, 100000) 
 
     return dato
@@ -108,10 +111,10 @@ def agregar_fila(tabla: dict) -> None:
     """
     nueva_fila = []
     for i in range(len(tabla['columnas'])):
-        dato = input("Ingrese filas: ")
-        nueva_fila.append(dato)
+        nueva_fila.append(" ")
     
     tabla['matriz'].append(nueva_fila)
+    print("---Se agrego una nueva fila---")
     
     
 
@@ -122,6 +125,7 @@ def agregar_columna(tabla: dict) -> None:
         tabla (dict): tabla de datos.
     """
     nombre_columna = input("Ingrese nombre para nueva columna: ")
+    nombre_columna = transformar_dato(nombre_columna)
     tabla['columnas'].append(nombre_columna)
     
     print(f"Defina tipo de datos para la nueva columna '{nombre_columna}':")
@@ -130,6 +134,8 @@ def agregar_columna(tabla: dict) -> None:
 
     for i in range(len(tabla['matriz'])):
         tabla['matriz'][i].append("")
+    
+    print("---Se agrego una nueva columna---")
             
 
 def eliminar_fila(tabla: dict) -> None:
@@ -139,14 +145,19 @@ def eliminar_fila(tabla: dict) -> None:
         tabla (dict): tabla de datos.
     """
 
-    fila = int(input("Ingrese número de fila a eliminar: "))
 
-    if 0 <= fila < len(tabla['matriz']):
+    fila = get_int_simple("Ingrese número de fila a eliminar: ",
+                          "Error, no es entero o no es numero")
+    fila -= 1
+
+    if 0 < fila < len(tabla['matriz']):
 
         tabla['matriz'].pop(fila)
+        print("---Se elimino la fila---")
 
     else:
         print("Índice de fila inválido.")
+    
 
 
 def eliminar_columna(tabla: dict) -> None:
@@ -164,6 +175,8 @@ def eliminar_columna(tabla: dict) -> None:
         tabla['tipos'].pop(indice_columna) 
         for fila in tabla['matriz']:
             fila.pop(indice_columna)
+            
+        print("---Se elimino la columna---")
     else:
         print("La columna no existe.")
 
@@ -303,6 +316,7 @@ def retornar_columna(tabla: list) -> str:
         str: retorna el nombre de una columna.
     """
     columna = input("Elija columna: ")
+    columna = transformar_dato(columna)
     columna_existente = verificar_columnas(tabla, columna)
 
     while not columna_existente:
@@ -313,7 +327,8 @@ def retornar_columna(tabla: list) -> str:
 
 
 def seleccionar_columnas_tabla(tabla: dict) -> list:
-    """Hace una lista de columnas seleccionadas de la tabla.
+    """Hace una lista de columnas seleccionadas de la tabla 
+        junto a sus nombres.
 
     Args:
         tabla (dict): tabla de datos.
@@ -325,11 +340,13 @@ def seleccionar_columnas_tabla(tabla: dict) -> list:
                 "Quiere seleccionar una columna de datos?(s/n): ",
                 "Error, solo ingresar 's' o 'n'", 
                 "s", "n")
-    
+    nombres_columnas = []
     lista_seleccionadas = [] 
 
     while cargar == "s":
         columna = retornar_columna(tabla)
+        nombres_columnas.append(columna)
+
         lista_seleccionadas.append(obtener_columna_por_nombre(tabla, 
                                                               columna))
 
@@ -337,7 +354,7 @@ def seleccionar_columnas_tabla(tabla: dict) -> list:
                                    "Error, ingrese 's' o 'n'", 
                                    "s", "n")
 
-    return lista_seleccionadas
+    return nombres_columnas, lista_seleccionadas
 
 
 def mostrar_columnas_seleccionadas(tabla: dict) -> None:
@@ -346,11 +363,16 @@ def mostrar_columnas_seleccionadas(tabla: dict) -> None:
     Args:
         tabla (dict): tabla de datos.
     """
-    columnas = seleccionar_columnas_tabla(tabla)
+    titulos, columnas = seleccionar_columnas_tabla(tabla)
     
     if len(columnas) != 0:
         
         cantidad_filas = len(columnas[0])
+
+        print("|", end="")
+        for i in range(len(titulos)):
+            print(f" {titulos[i]:^12} |", end="")
+        print()
         
         print("-" * (16 * len(columnas)))
 
@@ -377,8 +399,10 @@ def verificar_filas(tabla: dict) -> int:
     Returns:
         int: retorna el número de fila existente ingresado.
     """
-    fila = get_int_simple("Elija una fila (por índice numérico): ", 
+    fila = get_int_simple("Elija un numero de fila: ", 
                           "Error, Ingrese número entero positivo")
+    
+    fila -= 1
 
     total_filas = len(tabla['matriz']) - 1
     

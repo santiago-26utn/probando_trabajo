@@ -52,16 +52,22 @@ def modificar_celda_individual(tabla: dict, fila: int, columna: int) -> None:
         fila (int): numero de fila
         columna (int): numero de columna
     """
-    print(f"Dato actual en Fila {fila + 1}", 
-            "Columna '{tabla['columnas'][columna]}':"
-            "{tabla['matriz'][fila][columna]}")
+    nom_col = tabla['columnas'][columna]
+    actual = tabla['matriz'][fila][columna]
+    
+    print(
+        f"Dato actual en Fila {fila + 1}, Columna '{nom_col}': "
+        f"{actual}")
     
     modificar = obtener_respuesta(
-                        "¿Quiere modificar este dato específico? (si/no): ",
-                        "Error, ingrese 'si' o 'no'", "si", "no")
+        "¿Quiere modificar este dato específico? (si/no): ",
+        "Error, ingrese 'si' o 'no'", "si", "no")
+    
     if modificar == "si":
-        nuevo_dato = input("Ingrese nuevo dato: ")
-        tabla['matriz'][fila][columna] = transformar_dato(nuevo_dato)
+        tipo_esperado = tabla['tipos'][columna]
+        nuevo_dato = agregar_dato(tipo_esperado)
+        
+        tabla['matriz'][fila][columna] = nuevo_dato
 
 
 def modificar_fila(tabla: dict) -> None: 
@@ -134,7 +140,7 @@ def elegir_modificacion_de_variable(tabla: dict,
         fila (int): numero de fila
         columna (int): numero de columna
     """
-    print("\n1. Eliminar variable (vaciar celda)")
+    print("1. Eliminar variable (vaciar celda)")
     print("2. Modificar variable (cambiar valor)")
 
     opcion_modificacion = get_int(
@@ -161,13 +167,14 @@ def modificar_variables(nombre_proyecto: str,
     """
 
     nom_tabla = limpiar_texto(input("Tabla a analizar: "))
+    nom_tabla = transformar_dato(nom_tabla)
     if nom_tabla in proyectos[nombre_proyecto]:
         tabla = proyectos[nombre_proyecto][nom_tabla]
 
         print("1-Cargar tabla secuencial")
         print("2-Modificar fila completa")
         print("3-Modificar columna completa")
-        print("4-Modificar una variable/celda específica")
+        print("4-Modificar una celda específica")
         print("5-Salir de modificar variables")
 
         opcion = get_int("Ingresar una opcion numerica: ", 
@@ -195,7 +202,7 @@ def modificar_variables(nombre_proyecto: str,
             print("1-Cargar tabla secuencial")
             print("2-Modificar fila completa")
             print("3-Modificar columna completa")
-            print("4-Modificar una variable/celda específica")
+            print("4-Modificar una celda específica")
             print("5-Salir de modificar variables")
 
             opcion = get_int("Ingresar una opcion numerica: ", 

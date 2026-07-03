@@ -329,6 +329,7 @@ def get_length(mensaje: str,
                 return cadena
             else:
                 print(mensaje_error)
+                print("Texto muy largo o muy corto")
         else:
             print(mensaje_error)
 
