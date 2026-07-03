@@ -497,7 +497,8 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                 tabla_tipos = []
                 columnas = []
                 for i in range(cant_cols):
-                    col = limpiar_texto(input("Nombre Columna " + str(i + 1) + ": "))
+                    col = input("Nombre Columna " + str(i + 1) + ": ")
+                    col = limpiar_texto(col)
                     col = transformar_dato(col)        
                     columnas.append(col)
                     print(f"Para la columna '{col}':")
@@ -523,7 +524,7 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                 print("¡Tabla Creada!")
 
         elif opcion == 2:
-            nom_tabla = limpiar_texto(input("Ingrese el nombre de tabla a modificar: "))
+            nom_tabla = input("Ingrese el nombre de tabla a modificar: ")
             nom_tabla = transformar_dato(nom_tabla)
             
             if nom_tabla in proyectos[nombre_proyecto]:
@@ -712,7 +713,7 @@ def cargar_tablas_desde_csv(proyectos, nombre_proyecto):
             
             if len(linea) >= 7 and linea[0:7] == "Tabla: ":
                 nom_tabla_actual = linea[7:]
-                proyectos[nombre_proyecto][nom_tabla_actual] = {"columnas": [], 
+                proyectos[nombre_proyecto][nom_tabla_actual] = {"columnas": [],
                                                                 "tipos": [], 
                                                                 "matriz": []}
         

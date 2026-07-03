@@ -126,27 +126,35 @@ def verificar_columna_con_numeros(tabla: dict, columna_elegida: str) -> bool:
     return columna_numeros
 
 
-def obtener_columna_con_numeros(tabla: dict) -> str:
+def obtener_columna_con_numeros(tabla: dict, 
+                                tipo_texto: bool = False) -> str:
     """Pide una columna por consola hasta que el usuario ingrese una que sea
-       numérica y la retorna.
+       numérica y la retorna, o si el parametro 'tipo_texto' es True, pide
+       una columna no numerica.
     Args:
         tabla (dict): tabla de valores.
+        tipo_texto (bool): Si es False la funcion retornara una columna con
+                            solo numeros, caso contrario retornara una 
+                            columna con solo texto.
 
     Returns:
-        str: retorna la columna si solo contiene numeros.
+        str: retorna la columna si 'tipo_texto' es False y solo contiene
+            numeros, o si 'tipo_texto' es True y solo contiene texto.
     """
     columna = retornar_columna(tabla)
-    columna_numeros = verificar_columna_con_numeros(tabla, columna)         
+    columna_numeros = verificar_columna_con_numeros(tabla, columna) 
 
-    while columna_numeros == False:
-        print(" Esa columna no es numérica o contiene texto. Elija otra.")
+    while ((columna_numeros == False and tipo_texto == False) or 
+           (columna_numeros == True and tipo_texto == True)):
+        
+        print("Esa columna no cumple la condicion. Elija otra.")
         columna = retornar_columna(tabla)
         columna_numeros = verificar_columna_con_numeros(tabla, columna)
     
     return columna
 
 
-def crear_lista_numeros_de_columna(tabla: dict) -> list:
+def crear_lista_con_columna(tabla: dict, buscar_texto: bool = False) -> list:
     """Extrae los datos numéricos puros de la columna elegida para 
        enviárselos a las estadísticas.
     Args:
@@ -155,7 +163,7 @@ def crear_lista_numeros_de_columna(tabla: dict) -> list:
     Returns:
         list: retorna una lista con los valores de la columna elegida.
     """
-    columna = obtener_columna_con_numeros(tabla)
+    columna = obtener_columna_con_numeros(tabla, buscar_texto)
     columna_indice = obtener_indice_columna(tabla, columna)
     lista_columna = []
 
@@ -331,10 +339,19 @@ def contar_dato_textual(tabla: list) -> int:
         int: Retorna el numero de veces que el texto se repitio
             en la columna.
     """
+    lista_datos = crear_lista_con_columna(tabla, True)
+    contador = 0
+
     dato = get_length("Ingrese un dato para buscarlo: ",
                       "Error, no se aceptan numeros o caracteres especiales",
                       1, 18)
     dato = transformar_dato(dato)
+
+    for i in range(len(lista_datos)):
+        if lista_datos[i] == dato:
+            contador += 1
+
+    print(f"El dato {dato} se repite {contador} veces")
 
 
 def mostrar_menu_estadisticas(tabla: list) -> None:
@@ -343,7 +360,7 @@ def mostrar_menu_estadisticas(tabla: list) -> None:
     Args:
         tabla (list): tabla de datos.
     """
-    lista_datos = crear_lista_numeros_de_columna(tabla)
+    lista_datos = crear_lista_con_columna(tabla)
     lista_ordenada = ordenar_array(lista_datos)
 
     print(
