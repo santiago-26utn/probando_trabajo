@@ -614,6 +614,7 @@ def mostrar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
     """
     
     nom_tabla = limpiar_texto(input("Tabla a analizar: "))
+    nom_tabla = transformar_dato(nom_tabla)
     if nom_tabla in proyectos[nombre_proyecto]:
         tabla = proyectos[nombre_proyecto][nom_tabla]
 

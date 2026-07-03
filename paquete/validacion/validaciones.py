@@ -216,7 +216,18 @@ def get_float(mensaje: str,
               mensaje_error: str, 
               minimo: int, 
               maximo: int) -> float:
-    ""
+    """Pide repetidamente al usuario un numero flotante entre cierto rango, 
+       deja de pedir cuando el dato es correctamente ingresado.
+
+    Args:
+        mensaje (str): mensaje.
+        mensaje_error (str): mensaje error.
+        minimo (int): rango minimo.
+        maximo (int): rango maximo.
+
+    Returns:
+        float: retorna el numero elegido dentro del rango.
+    """
 
     numero = 0
 
@@ -274,7 +285,18 @@ def get_length(mensaje: str,
                mensaje_error: str,
                minimo: int, 
                maximo: int) -> str:
-    ""
+    """Pide repetidamente al usuario una cadena de texto entre cierto rango,
+       deja de pedir cuando el dato es correctamente ingresado.
+
+    Args:
+        mensaje (str): mensaje.
+        mensaje_error (str): mensaje error.
+        minimo (int): rango minimo.
+        maximo (int): rango maximo.
+
+    Returns:
+        int: retorna la cadena de texto elegida dentro del rango.
+    """
 
     cadena = ""
 
@@ -521,7 +543,15 @@ def verificar_minuscula(caracter_ingresado: str) -> str:
     return letra_verificada
 
 def transformar_texto(texto_ingresado: str) -> str:
-    ""
+    """Limpia el texto y lo convierte todo a minuscula,
+        exceptuando la primera letra que es mayuscula.
+
+    Args:
+        texto_ingresado (str): cadena de texto
+
+    Returns:
+        str: retorna la cadena de texto transformada.
+    """
     texto_limpio = limpiar_texto(texto_ingresado)
     texto_transformado = ""
 
@@ -538,7 +568,8 @@ def transformar_texto(texto_ingresado: str) -> str:
         
 
 def transformar_dato(dato_ingresado: any) -> str | int | float:
-    """Transforma el dato pasado para que sea legible.
+    """Transforma el dato pasado para que sea legible y acorde a 
+        su contenido.
 
     Args:
         dato_ingresado (any): cadena de texto o numero.
