@@ -1,4 +1,4 @@
-from paquete.validacion.validaciones import limpiar_texto
+from paquete.validacion.validaciones import *
 
 def separar_linea(cadena: str, separador: str) -> tuple:
     """Separa una cadena en dos partes (usuario y contraseña)

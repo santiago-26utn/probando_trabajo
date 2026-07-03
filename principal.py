@@ -1,6 +1,5 @@
-from paquete.autenticacion import iniciar_sesion, registrar_usuario
+from paquete.usuarios.autenticacion import iniciar_sesion, registrar_usuario
 from paquete.validacion.validaciones import *
-from paquete.formato import *
 from paquete.estadistica.estadistica import *
 from paquete.variables.variables import *
 from paquete.tabla.tablas import *
@@ -36,7 +35,7 @@ while sistema_activa:
     print(f"[Activo: {proyecto_activo}]")
     print("1.Proyectos")
     print("2.Tablas")
-    print("3.Modificar Variables")
+    print("3.Variables")
     print("4.Mostrar")
     print("5.Estadisticas")
     print("6.Salir")

@@ -35,11 +35,10 @@ def agregar_dato(tipo_dato: str) -> int | str:
     """
     if tipo_dato == "texto":
         dato = input("Agregar dato: ")      
-    elif tipo_dato == "vacio":
-        dato = " "
     elif tipo_dato == "numerico":
-        dato = get_int_simple("Ingresar número entero positivo", 
-                              "Error, Ingrese número entero positivo") 
+        dato = get_float("Ingresar número entero positivo", 
+                         "Error, Ingrese número entero positivo",
+                         0, 100000) 
 
     return dato
 
@@ -67,7 +66,7 @@ def cargar_fila(tabla: dict) -> list:
     else:
         for i in range(len(tabla['columnas'])):
             print(f"Columna [{tabla['columnas'][i]}]") 
-            print(f"Tipo esperado de dato: {tabla['tipos'][i]})")    
+            print(f"Tipo esperado de dato: {tabla['tipos'][i]}")    
             dato = agregar_dato(tabla['tipos'][i])
             fila.append(dato)
 
@@ -243,7 +242,7 @@ def obtener_columna_por_nombre(tabla: dict, columna: str) -> list:
     return lista_columna
 
 
-def mostrar_columna(tabla: dict, columna_elegida: str) -> bool:#funcion que ya no va? ver en otros modulos
+def mostrar_columna(tabla: dict, columna_elegida: str) -> bool:
     """Verifica si existe la columna.
 
     Args:
@@ -463,22 +462,26 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
     while opcion != 4:
         if opcion == 1:
             nom_tabla = limpiar_texto(input("Nombre tabla: "))
+            nom_tabla = transformar_dato(nom_tabla)
         
             if nom_tabla in proyectos[nombre_proyecto]:
                 print("La tabla ya existe en este proyecto.")
             else:
-                cant_cols = leer_entero_validado("Ingrese cantidad Columnas: ")
+                cant_cols = get_int_simple("Ingrese cantidad Columnas: ",
+                                           "Error, ingrese un entero")
 
                 tabla_tipos = []
                 columnas = []
                 for i in range(cant_cols):
                     col = limpiar_texto(input("Nombre Columna " + str(i + 1) + ": "))
+                    col = transformar_dato(col)        
                     columnas.append(col)
                     print(f"Para la columna '{col}':")
                     tip = elegir_tipo_dato()
                     tabla_tipos.append(tip)
                     
-                cant_f = leer_entero_validado("Ingrese cantidad Filas: ")
+                cant_f = get_int_simple("Ingrese cantidad de Filas: ",
+                                           "Error, ingrese un entero")
                 
                 matriz = []
                 for f in range(cant_f):
@@ -497,6 +500,7 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
 
         elif opcion == 2:
             nom_tabla = limpiar_texto(input("Ingrese el nombre de tabla a modificar: "))
+            nom_tabla = transformar_dato(nom_tabla)
             
             if nom_tabla in proyectos[nombre_proyecto]:
                 tabla_elegida = proyectos[nombre_proyecto][nom_tabla]

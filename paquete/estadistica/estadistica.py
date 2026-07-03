@@ -330,6 +330,7 @@ def mostrar_estadisticas(nombre_proyecto: str, proyectos: dict) -> None:
         proyectos (dict): diccionario con valores.
     """
     nom_tabla = limpiar_texto(input("Tabla a analizar: "))
+    nom_tabla = transformar_dato(nom_tabla)
     if nom_tabla in proyectos[nombre_proyecto]:
         tabla = proyectos[nombre_proyecto][nom_tabla]
 
