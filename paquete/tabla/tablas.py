@@ -460,6 +460,50 @@ def filtrar_columnas(tabla: dict) -> None:
                 print(f" {str(dato):^10} |", end="")
             print()
 
+def guardar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
+    """Guarda la tabla en un archivo csv.
+
+    Args:
+        nombre_proyecto (str): nombre del proyecto actual.
+        proyectos (dict): diccionario actual.
+    """
+    for nom_tabla in proyectos[nombre_proyecto]:
+        tabla_actual = proyectos[nombre_proyecto][nom_tabla]
+
+        archivo_csv = open("paquete/archivos/tablas.csv", "a")
+        archivo_csv.write(f"Tabla: {nom_tabla}\n")
+
+        linea_columnas = ""
+        for i in range(len(tabla_actual['columnas'])):
+            linea_columnas = linea_columnas + str(tabla_actual['columnas'][i])
+            if i < len(tabla_actual['columnas']) - 1:
+                linea_columnas = linea_columnas + ","
+        
+        linea_columnas = linea_columnas + "\n"
+        archivo_csv.write(linea_columnas)
+
+        linea_tipos = ""
+        for t in range(len(tabla_actual['tipos'])):
+            linea_tipos = linea_tipos + str(tabla_actual['tipos'][t])
+            if t < len(tabla_actual['tipos']) - 1:
+                linea_tipos = linea_tipos + ","
+        
+        linea_tipos = linea_tipos + "\n"
+        archivo_csv.write(linea_tipos)
+
+        for f in range(len(tabla_actual['matriz'])):
+            linea_fila = ""
+            for c in range(len(tabla_actual['matriz'][f])):
+                linea_fila = linea_fila + str(tabla_actual['matriz'][f][c])
+                if c < len(tabla_actual['matriz'][f]) - 1:
+                    linea_fila = linea_fila + ","
+            
+            linea_fila = linea_fila + "\n"
+            archivo_csv.write(linea_fila)
+
+    archivo_csv.close()
+    print("¡Todas las tablas del proyecto fueron guardadas")
+
 
 def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:    
     """Menu para crear, modificar o guardar una tabla.
@@ -538,44 +582,8 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                 print("La tabla especificada no existe en este proyecto.")
         
         elif opcion == 3:
-
-            for nom_tabla in proyectos[nombre_proyecto]:
-                tabla_actual = proyectos[nombre_proyecto][nom_tabla]
-
-                archivo_csv = open("paquete/archivos/tablas.csv", "a")
-                archivo_csv.write(f"Tabla: {nom_tabla}\n")
-
-                linea_columnas = ""
-                for i in range(len(tabla_actual['columnas'])):
-                    linea_columnas = linea_columnas + str(tabla_actual['columnas'][i])
-                    if i < len(tabla_actual['columnas']) - 1:
-                        linea_columnas = linea_columnas + ","
-                
-                linea_columnas = linea_columnas + "\n"
-                archivo_csv.write(linea_columnas)
-
-                linea_tipos = ""
-                for t in range(len(tabla_actual['tipos'])):
-                    linea_tipos = linea_tipos + str(tabla_actual['tipos'][t])
-                    if t < len(tabla_actual['tipos']) - 1:
-                        linea_tipos = linea_tipos + ","
-                
-                linea_tipos = linea_tipos + "\n"
-                archivo_csv.write(linea_tipos)
-
-                for f in range(len(tabla_actual['matriz'])):
-                    linea_fila = ""
-                    for c in range(len(tabla_actual['matriz'][f])):
-                        linea_fila = linea_fila + str(tabla_actual['matriz'][f][c])
-                        if c < len(tabla_actual['matriz'][f]) - 1:
-                            linea_fila = linea_fila + ","
-                    
-                    linea_fila = linea_fila + "\n"
-                    archivo_csv.write(linea_fila)
-
-            archivo_csv.close()
-            print("¡Todas las tablas del proyecto fueron guardadas")
-                
+            guardar_tabla(nombre_proyecto, proyectos)
+            
         print("\n1-Crear tabla\n2-Modificar tabla\n3-Guardar tabla\n4-Salir")
 
         opcion = get_int("Ingresar una opcion numerica: ", 
@@ -702,7 +710,7 @@ def cargar_tablas_desde_csv(proyectos, nombre_proyecto):
         proyectos[nombre_proyecto] = {}
         
     archivo = open(ruta, "r")
-    nom_tabla_actual = ""
+    nom_tabla = ""
     
     for linea in archivo:
         
@@ -712,12 +720,12 @@ def cargar_tablas_desde_csv(proyectos, nombre_proyecto):
         if len(linea) > 0:
             
             if len(linea) >= 7 and linea[0:7] == "Tabla: ":
-                nom_tabla_actual = linea[7:]
-                proyectos[nombre_proyecto][nom_tabla_actual] = {"columnas": [],
-                                                                "tipos": [], 
-                                                                "matriz": []}
+                nom_tabla = linea[7:]
+                proyectos[nombre_proyecto][nom_tabla] = {"columnas": [],
+                                                            "tipos": [], 
+                                                            "matriz": []}
         
-            elif nom_tabla_actual != "":
+            elif nom_tabla != "":
                 datos = []
                 palabra_actual = ""
                 
@@ -731,8 +739,8 @@ def cargar_tablas_desde_csv(proyectos, nombre_proyecto):
                 
                 datos.append(palabra_actual)
  
-                if len(proyectos[nombre_proyecto][nom_tabla_actual]["columnas"]) == 0:
-                    proyectos[nombre_proyecto][nom_tabla_actual]["columnas"] = datos
+                if len(proyectos[nombre_proyecto][nom_tabla]["columnas"]) == 0:
+                    proyectos[nombre_proyecto][nom_tabla]["columnas"] = datos
                 else:
                     es_vacia = True
                     for d in datos:
@@ -740,7 +748,7 @@ def cargar_tablas_desde_csv(proyectos, nombre_proyecto):
                             es_vacia = False
                     
                     if es_vacia == False:
-                        proyectos[nombre_proyecto][nom_tabla_actual]["matriz"].append(datos)
+                        proyectos[nombre_proyecto][nom_tabla]["matriz"].append(datos)
                         
     archivo.close()
     return proyectos

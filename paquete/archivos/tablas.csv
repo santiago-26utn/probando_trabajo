@@ -47,3 +47,39 @@ Monica,45.0,74.0
 Carlos,75.0,47.0
 Louis,43.0,34.0
 Luna,83.0,435.0
+Tabla: uno
+nombre,notapp,notasp
+
+texto,numerico,numerico
+juan,7,9
+alma,6,8
+Tabla: producto
+nombre,cantidad,precio
+
+texto,numerico,numerico
+chocolate,100,10
+caramelo,20,50
+Tabla: empleados
+nombre,apellido
+
+texto,texto
+PEdro,perez
+Juan,perez
+Tabla: progra1
+estudiantes,profesores,materias
+
+texto,texto,texto
+Tabla: Uno
+Nombre,Edad,Productos
+
+texto,numerico,numerico
+Juan,34.0,76.0
+Monica,45.0,74.0
+Carlos,75.0,47.0
+Louis,43.0,34.0
+Luna,83.0,435.0
+Tabla: Creayon
+Nombre,Color
+texto,texto
+Uno,Marron
+Dos,Fucsia
