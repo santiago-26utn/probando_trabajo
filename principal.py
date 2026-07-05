@@ -30,7 +30,7 @@ while continuar_login:
             print("Opción inválida.")
 
 proyecto_activo = "Proyecto_Predeterminado"
-proyectos = cargar_tablas_desde_csv(proyectos, proyecto_activo)
+proyectos, proyecto_activo = cargar_tablas_desde_csv(proyectos, proyecto_activo)
 while sistema_activa:
     print(f"[Activo: {proyecto_activo}]")
     print("1.Proyectos")
