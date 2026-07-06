@@ -33,7 +33,7 @@ def cargar_tabla_secuencial(tabla: dict) -> list:
             
             if f < total_filas:
                 cargar = obtener_respuesta(
-                                "¿Quiere cargar otra fila de datos? (s/n): ",
+                                "Quiere cargar otra fila de datos? (s/n): ",
                                 "Error, ingresar solo 's' o 'n'",
                                 "s", "n")
             else:
@@ -44,7 +44,9 @@ def cargar_tabla_secuencial(tabla: dict) -> list:
     return tabla
 
 
-def modificar_celda_individual(tabla: dict, fila: int, columna: int) -> None:
+def modificar_celda_individual(tabla: dict, 
+                               fila: int, 
+                               columna: int) -> None:
     """Modifica una celda especifica de la tabla.
 
     Args:
@@ -57,7 +59,7 @@ def modificar_celda_individual(tabla: dict, fila: int, columna: int) -> None:
             "{tabla['matriz'][fila][columna]}")
     
     modificar = obtener_respuesta(
-                        "¿Quiere modificar este dato específico? (si/no): ",
+                        "Quiere modificar este dato específico? (si/no): ",
                         "Error, ingrese 'si' o 'no'", "si", "no")
     if modificar == "si":
         nuevo_dato = input("Ingrese nuevo dato: ")
@@ -105,7 +107,7 @@ def modificar_columna(tabla: dict) -> None:
     """
     for i in range(len(tabla['columnas'])):
         print(f"\nDatos de la columna '{tabla['columnas'][i]}':")
-        #mostrar_columna(tabla, tabla['columnas'][i]) 
+        #mostrar_columna(tabla, tabla['columnas'][i])           #cambiar
         
         modificar = obtener_respuesta(
                             "¿Quiere modificar esta columna? (si/no): ",
@@ -151,7 +153,6 @@ def elegir_modificacion_de_variable(tabla: dict,
         fila (int): numero de fila
         columna (int): numero de columna
     """
-    print("\n1. Eliminar variable (vaciar celda)")
     print("1. Eliminar variable (vaciar celda)")
     print("2. Modificar variable (cambiar valor)")
 
@@ -177,7 +178,8 @@ def modificar_variables(nombre_proyecto: str,
         nombre_proyecto (str): nombre del proyecto actual.
         proyectos (dict): diccionario actual.
     """
-
+    
+    mostrar_tablas_disponibles(nombre_proyecto, proyectos)
     nom_tabla = limpiar_texto(input("Tabla a analizar: "))
 
     nom_tabla = transformar_dato(nom_tabla)

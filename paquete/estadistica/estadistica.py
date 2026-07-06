@@ -83,7 +83,7 @@ def mostrar_moda(lista: list) -> None:
             moda = lista_valores[i]
 
     if max_frecuencia > 1:
-        print(f"La moda de la columna es: {moda} (Se repite {max_frecuencia} veces)")
+        print(f"La moda es: {moda} (Se repite {max_frecuencia} veces)")
     else:
         print(f"No hay moda, todos los valores se repiten una vez")
 
@@ -101,7 +101,8 @@ def mostrar_rango(lista: list) -> None:
 
 
 
-def verificar_columna_con_numeros(tabla: dict, columna_elegida: str) -> bool:
+def verificar_columna_con_numeros(tabla: dict, 
+                                  columna_elegida: str) -> bool:
     """Verifica si todas las celdas de la columna seleccionada contienen 
        números.
     Args:
@@ -154,7 +155,8 @@ def obtener_columna_con_numeros(tabla: dict,
     return columna
 
 
-def crear_lista_con_columna(tabla: dict, buscar_texto: bool = False) -> list:
+def crear_lista_con_columna(tabla: dict, 
+                            buscar_texto: bool = False) -> list:
     """Extrae los datos numéricos puros de la columna elegida para 
        enviárselos a las estadísticas.
     Args:
@@ -213,7 +215,8 @@ def calcular_promedio_geometrico(lista: list) -> float:
     for i in range(len(lista)):
         total_columna *= lista[i]
 
-    promedio_geometrico = calcular_raiz(total_columna, total_elementos_columna)
+    promedio_geometrico = calcular_raiz(total_columna, 
+                                        total_elementos_columna)
 
     return promedio_geometrico
 
@@ -423,6 +426,8 @@ def mostrar_estadisticas(nombre_proyecto: str, proyectos: dict) -> None:
         nombre_proyecto (str): nombre de un proyecto.
         proyectos (dict): diccionario con valores.
     """
+    
+    mostrar_tablas_disponibles(nombre_proyecto, proyectos)
     nom_tabla = limpiar_texto(input("Tabla a analizar: "))
     nom_tabla = transformar_dato(nom_tabla)
     if nom_tabla in proyectos[nombre_proyecto]:

@@ -135,10 +135,10 @@ def obtener_respuesta(mensaje: str,
     respuesta_aceptada = False
 
     while True:
-        respuesta = input(mensaje)
+        resp = input(mensaje)
 
-        if respuesta == respuesta_positiva or respuesta == respuesta_negativa:
-            return respuesta
+        if resp == respuesta_positiva or resp == respuesta_negativa:
+            return resp
         print(mensaje_error)
 
 

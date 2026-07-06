@@ -15,8 +15,7 @@ def separar_linea(cadena: str, separador: str) -> tuple:
             ejemplo, ",").
 
     Returns:
-        tuple: Una tupla (usuario, contrasenia) con ambos valores ya
-            limpios mediante limpiar_texto.
+        tuple: Una tupla (usuario, contrasenia) con ambos valores.
     """
     usuario = ""
     contrasenia = ""
@@ -31,7 +30,7 @@ def separar_linea(cadena: str, separador: str) -> tuple:
             else:
                 contrasenia += cadena[i]
 
-    return limpiar_texto(usuario), limpiar_texto(contrasenia)
+    return usuario, contrasenia
 
 
 def registrar_usuario():
@@ -54,28 +53,32 @@ def registrar_usuario():
     creador.close()
     usuario = limpiar_texto(input("Ingrese el usuario a registrar: "))
     f = open("paquete/archivos/usuarios.csv", "r")
+    existe_usuario = False
 
     # 2. Leemos para verificar si el usuario ya existe
     f = open("paquete/archivos/usuarios.csv", "r")
     for linea in f:
-        linea_limpia = limpiar_texto(linea)
-        u, _ = separar_linea(linea_limpia, ",")
-        if u == usuario:
-            print("El usuario ya existe en la base de datos.")
-            f.close() 
-            return 
+        if len(linea) > 0 and linea[len(linea) - 1] == "\n":
+            linea = linea[:-1]
+            
+        if len(linea) > 0 and "," in linea:
+            u, c = separar_linea(linea, ",")
+            if u == usuario:
+                print("El usuario ya existe en la base de datos.")
+                f.close() 
+                existe_usuario = True
 
     f.close() 
 
-    contrasenia = limpiar_texto(input("Ingrese su contraseña: "))
-    if len(contrasenia) < 4:
-        print("La contraseña debe tener al menos 4 caracteres.")
-        return
-
-    # 3. Guardamos el nuevo usuario en la carpeta 'archivos'
-    f = open("paquete/archivos/usuarios.csv", "a")
-    f.write(usuario + "," + contrasenia + "\n")
-    f.close()
+    if not existe_usuario:
+        contrasenia = input("Ingrese su contraseña: ")
+        if len(contrasenia) < 4:
+            print("La contraseña debe tener al menos 4 caracteres.")
+        else:
+            # 3. Guardamos el nuevo usuario en la carpeta 'archivos'
+            f = open("paquete/archivos/usuarios.csv", "a")
+            f.write(usuario + "," + contrasenia + "\n")
+            f.close()
 
     print("¡Usuario registrado con éxito!")
 
@@ -96,7 +99,7 @@ def iniciar_sesion() -> bool:
     print("\n--- INICIO DE SESIÓN ---")
 
     usuario = limpiar_texto(input("Usuario: "))
-    contrasenia = limpiar_texto(input("Contraseña: "))
+    contrasenia = input("Contraseña: ")
     verificado = False
 
     creador = open("paquete/archivos/usuarios.csv", "a")
@@ -104,8 +107,11 @@ def iniciar_sesion() -> bool:
 
     f = open("paquete/archivos/usuarios.csv", "r")
     for linea in f:
-        linea_limpia = limpiar_texto(linea)
-        u, c = separar_linea(linea_limpia, ",")
+        if len(linea) > 0 and linea[len(linea) - 1] == "\n":
+            linea = linea[:-1]
+
+        if len(linea) > 0 and "," in linea:
+            u, c = separar_linea(linea, ",")
 
         if u == usuario and c == contrasenia:
             print("¡Bienvenido, " + usuario + "!")

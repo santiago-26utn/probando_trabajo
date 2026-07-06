@@ -1,4 +1,4 @@
-from paquete.usuarios.autenticacion import iniciar_sesion, registrar_usuario
+from paquete.usuarios.autenticacion import *
 from paquete.validacion.validaciones import *
 from paquete.estadistica.estadistica import *
 from paquete.variables.variables import *
@@ -19,7 +19,7 @@ while continuar_login:
 
     match opc:
         case 1:
-            if iniciar_sesion():
+            if iniciar_sesion() == True:
                 sistema_activa = True      
                 continuar_login = False    
         case 2:
@@ -30,7 +30,8 @@ while continuar_login:
             print("Opción inválida.")
 
 proyecto_activo = "Proyecto_Predeterminado"
-proyectos, proyecto_activo = cargar_tablas_desde_csv(proyectos, proyecto_activo)
+proyectos, proyecto_activo = cargar_tablas_desde_csv(proyectos, 
+                                                     proyecto_activo)
 while sistema_activa:
     print(f"[Activo: {proyecto_activo}]")
     print("1.Proyectos")
@@ -42,9 +43,11 @@ while sistema_activa:
     opcion = get_int("Ingrese una opcion numeral: ",
                      "Error, ingrese un número entre 1 y 6 ",
                      1, 6)
+    print("")
 
     match opcion:
         case 1:
+            mostrar_proyectos_disponibles(proyectos)
             nuevo_p = limpiar_texto(input("Nombre proyecto: "))
             if nuevo_p not in proyectos: 
                 proyectos[nuevo_p] = {}
@@ -63,8 +66,13 @@ while sistema_activa:
             mostrar_estadisticas(proyecto_activo, proyectos)
 
         case 6:
-            print("Saliendo del sistema.")
-            sistema_activa = False  
+            print("Cuidado! Si sale sin guardar tablas, nada se guardara")
+            salir = obtener_respuesta("Desea salir? (s/n)",
+                                      "Error, ingrese 's' o 'n'",
+                                      "s", "n")
+            if salir == "s":
+                print("Saliendo del sistema.")
+                sistema_activa = False
 
         case _:
             print("Opción inválida.")
