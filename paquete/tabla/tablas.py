@@ -458,7 +458,7 @@ def mostrar_proyectos_disponibles(proyectos: dict) -> None:
         print("No hay proyectos creados en el sistema!")
 
 
-def guardar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
+def guardar_tablas(nombre_proyecto: str, proyectos: dict) -> None:
 
     """
     Sincroniza y guarda todas las tablas y proyectos de 
@@ -480,11 +480,11 @@ def guardar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
 
     archivo_csv = open("paquete/archivos/tablas.csv", "w")
     
-    for cada_proyecto in proyectos:
-        archivo_csv.write(f"Proyecto: {cada_proyecto}\n")
+    for proyecto in proyectos:
+        archivo_csv.write(f"Proyecto: {proyecto}\n")
         
-        for nom_tabla in proyectos[cada_proyecto]:
-            tabla_actual = proyectos[cada_proyecto][nom_tabla]
+        for nom_tabla in proyectos[proyecto]:
+            tabla_actual = proyectos[proyecto][nom_tabla]
     
             archivo_csv.write(f"Tabla: {nom_tabla}\n")
             
@@ -515,14 +515,63 @@ def guardar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
                         linea_f = linea_f + ","
                         
                 linea_f = linea_f + "\n"
-                if len(linea_f) > 0 and linea_f != ",\n" and linea_f != "\n" and linea_f != ",":
-                    archivo_csv.write(linea_f)
+                if len(linea_f) > 0 and linea_f != ",\n":
+                    if linea_f != "\n" and linea_f != ",":
+                        archivo_csv.write(linea_f)
                     
     archivo_csv.close()
     print("¡Todas las tablas de todos los proyectos fueron guardadas!")
 
 
-def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
+def guardar_tabla_csv(nombre_p: str, 
+                      nom_tabla: str, 
+                      tabla: dict, 
+                      proyectos: dict) -> None:
+    """Guarda una tabla individual cuando se hacen modificaciones.
+
+    Args:
+        nombre_p (str): nombre de proyecto.
+        nom_tabla (str): nombre de tabla.
+        tabla (dict): tabla de valores.
+    """
+    ruta = "paquete/archivos/tablas.csv"
+    archivo = open(ruta, "w")
+    
+    for proyecto in proyectos:
+        archivo.write(f"Proyecto: {proyecto}\n")
+        
+        for nombre_de_tabla in proyectos[proyecto]:
+            tabla_actual = proyectos[proyecto][nombre_de_tabla]
+            archivo.write(f"Tabla: {nombre_de_tabla}\n")
+            
+            linea_columnas = ""
+            for i in range(len(tabla_actual["columnas"])):
+                linea_columnas += tabla_actual["columnas"][i]
+                if i < len(tabla_actual["columnas"]) - 1:
+                    linea_columnas += ","
+            archivo.write(linea_columnas + "\n")
+            
+            linea_tipos = ""
+            for i in range(len(tabla_actual["tipos"])):
+                linea_tipos += tabla_actual["tipos"][i]
+                if i < len(tabla_actual["tipos"]) - 1:
+                    linea_tipos += ","
+            archivo.write(linea_tipos + "\n")
+            
+            for fila in tabla_actual["matriz"]:
+                linea_datos = ""
+                for i in range(len(fila)):
+                    linea_datos += str(fila[i])
+                    if i < len(fila) - 1:
+                        linea_datos += ","
+                archivo.write(linea_datos + "\n")
+                
+    archivo.close()
+
+
+
+def crear_o_modificar_tabla(nombre_proyecto: str, 
+                            proyectos: dict) -> dict:
     """Menu para crear, modificar o guardar una tabla.
 
     Args:
@@ -539,7 +588,7 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
 
     print("1-Crear tabla")
     print("2-Modificar tabla")
-    print("3-Guardar tabla")
+    print("3-Guardar tablas")
     print("4-Salir de crear tabla")
 
     opcion = get_int("Ingresar una opcion numerica: ", 
@@ -548,7 +597,8 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
 
     while opcion != 4:
         if opcion == 1:
-            nom_tabla = limpiar_texto(input("Nombre tabla: "))
+            mostrar_tablas_disponibles(nombre_proyecto, proyectos)
+            nom_tabla = input("Ingrese el nombre de tabla a modificar: ")
             nom_tabla = transformar_dato(nom_tabla)
         
             if nom_tabla in proyectos[nombre_proyecto]:
@@ -602,7 +652,7 @@ def crear_o_modificar_tabla(nombre_proyecto: str, proyectos: dict) -> dict:
                 print("La tabla especificada no existe en este proyecto.")
         
         elif opcion == 3:
-            guardar_tabla(nombre_proyecto, proyectos)
+            guardar_tablas(nombre_proyecto, proyectos)
             
         print("\n1-Crear tabla\n2-Modificar tabla\n3-Guardar tabla\n4-Salir")
 
@@ -667,8 +717,7 @@ def mostrar_tabla(nombre_proyecto: str, proyectos: dict) -> None:
     """
     
     mostrar_tablas_disponibles(nombre_proyecto, proyectos)
-
-    nom_tabla = limpiar_texto(input("Tabla a analizar: "))
+    nom_tabla = input("Ingrese el nombre de tabla a mostrar: ")
     nom_tabla = transformar_dato(nom_tabla)
     if nom_tabla in proyectos[nombre_proyecto]:
         tabla = proyectos[nombre_proyecto][nom_tabla]

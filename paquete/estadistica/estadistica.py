@@ -428,7 +428,7 @@ def mostrar_estadisticas(nombre_proyecto: str, proyectos: dict) -> None:
     """
     
     mostrar_tablas_disponibles(nombre_proyecto, proyectos)
-    nom_tabla = limpiar_texto(input("Tabla a analizar: "))
+    nom_tabla = input("Ingrese el nombre de tabla para hacer calculos: ")
     nom_tabla = transformar_dato(nom_tabla)
     if nom_tabla in proyectos[nombre_proyecto]:
         tabla = proyectos[nombre_proyecto][nom_tabla]

@@ -1,7 +1,6 @@
 Proyecto: programando
 Tabla: Aprobando
 Luciano,Jordy,Santi
-
 texto,texto,texto
 ,,
 ,,
@@ -9,14 +8,12 @@ texto,texto,texto
 Proyecto: proyectoseguro
 Tabla: Programa
 Morro,Yacolca,Sir
-
 texto,texto,texto
 ,,
 ,,
 ,,
 Tabla: Uno
 Nombre,Edad
-
 texto,numerico
 Juan,23.0
 Alma,25.0
@@ -27,5 +24,5 @@ Producto,Cantidad,Precio
 texto,numerico,numerico
 Caramelos,300.0,10.0
 Chocolate,250.0,25.0
-Bombon,120.0,20.0
+Bombon,115.0,20.0
 Gomitas,195.0,15.0

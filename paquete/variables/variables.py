@@ -54,33 +54,22 @@ def modificar_celda_individual(tabla: dict,
         fila (int): numero de fila
         columna (int): numero
     """
-    print(f"Dato actual en Fila {fila + 1}", 
-            "Columna '{tabla['columnas'][columna]}':"
-            "{tabla['matriz'][fila][columna]}")
-    
-    modificar = obtener_respuesta(
-                        "Quiere modificar este dato específico? (si/no): ",
-                        "Error, ingrese 'si' o 'no'", "si", "no")
-    if modificar == "si":
-        nuevo_dato = input("Ingrese nuevo dato: ")
-        tabla['matriz'][fila][columna] = transformar_dato(nuevo_dato)
-
     nom_col = tabla['columnas'][columna]
     actual = tabla['matriz'][fila][columna]
     
-    print(
-        f"Dato actual en Fila {fila + 1}, Columna '{nom_col}': "
-        f"{actual}")
+    # Corregimos el f-string para que muestre los datos reales
+    print(f"Dato actual en Fila {fila + 1}, Columna '{nom_col}': {actual}")
     
     modificar = obtener_respuesta(
-        "¿Quiere modificar este dato específico? (si/no): ",
-        "Error, ingrese 'si' o 'no'", "si", "no")
+            "¿Quiere modificar este dato específico? (si/no): ",
+            "Error, ingrese 'si' o 'no'", "si", "no")
     
     if modificar == "si":
         tipo_esperado = tabla['tipos'][columna]
         nuevo_dato = agregar_dato(tipo_esperado)
         
         tabla['matriz'][fila][columna] = nuevo_dato
+        print("Dato modificado con exito.")
 
 
 def modificar_fila(tabla: dict) -> None: 
@@ -107,7 +96,6 @@ def modificar_columna(tabla: dict) -> None:
     """
     for i in range(len(tabla['columnas'])):
         print(f"\nDatos de la columna '{tabla['columnas'][i]}':")
-        #mostrar_columna(tabla, tabla['columnas'][i])           #cambiar
         
         modificar = obtener_respuesta(
                             "¿Quiere modificar esta columna? (si/no): ",
@@ -198,13 +186,18 @@ def modificar_variables(nombre_proyecto: str,
                         1, 5)
 
         while opcion != 5:
+            hubo_cambio = False
+
             match opcion:
                 case 1:
                     cargar_tabla_secuencial(tabla)
+                    hubo_cambio = True
                 case 2:
                     modificar_fila(tabla)
+                    hubo_cambio = True
                 case 3:
                     modificar_columna(tabla)
+                    hubo_cambio = True
                 case 4:
                     if len(tabla['matriz']) != 0:
                         fila = verificar_filas(tabla) 
@@ -212,20 +205,26 @@ def modificar_variables(nombre_proyecto: str,
                         col = obtener_indice_columna(tabla, col_nombre)
                         
                         elegir_modificacion_de_variable(tabla, fila, col)
+                        hubo_cambio = True
                     else:
                         print("La tabla no tiene filas de datos.")
+                        
+            if hubo_cambio:
+                guardar_tabla_csv(nombre_proyecto, 
+                                  nom_tabla, 
+                                  tabla, 
+                                  proyectos)
                         
             print("1-Cargar tabla secuencial")
             print("2-Modificar fila completa")
             print("3-Modificar columna completa")
             print("4-Modificar una variable/celda específica")
             print("4-Modificar una celda específica")
-
             print("5-Salir de modificar variables")
 
             opcion = get_int("Ingresar una opcion numerica: ", 
-                            "Error, Intente otra vez", 
-                            1, 5)
+                             "Error, Intente otra vez", 
+                             1, 5)
     else:
         print("No existe tabla con ese nombre!")
             
