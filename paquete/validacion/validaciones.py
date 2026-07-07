@@ -425,7 +425,7 @@ def calcular_raiz(numero: float, indice: int) -> float|int:
     return aproximacion
 
 
-def ordenar_array(array_numeros: list, descendente: bool=False) -> list:
+def ordenar_array(array_numero: list, descender: bool=False) -> list:
     """ordena un array por default en forma ascendente, o descendente
        si se le pasa un True de parametro
 
@@ -439,7 +439,7 @@ def ordenar_array(array_numeros: list, descendente: bool=False) -> list:
     Returns:
         list: retorna la lista ordenada segun el parametro "descendente".
     """
-    n = len(array_numeros)
+    n = len(array_numero)
 
     for i in range(n):
 
@@ -447,14 +447,14 @@ def ordenar_array(array_numeros: list, descendente: bool=False) -> list:
 
         for j in range(0, limite_superior):
 
-            if (not descendente and array_numeros[j] > array_numeros[j + 1]) or \
-               (descendente and array_numeros[j] < array_numeros[j + 1]):
+            if (not descender and array_numero[j] > array_numero[j + 1]) or \
+               (descender and array_numero[j] < array_numero[j + 1]):
                                                                                 
-                menor = array_numeros[j + 1]
-                array_numeros[j + 1] = array_numeros[j]
-                array_numeros[j] = menor
+                menor = array_numero[j + 1]
+                array_numero[j + 1] = array_numero[j]
+                array_numero[j] = menor
 
-    return array_numeros
+    return array_numero
 
 
 def verificar_paridad_con_booleano(numero: int) -> bool:
@@ -606,7 +606,7 @@ def separar_por_comas(texto: str) -> list:
         texto (str): cadena de texto
 
     Returns:
-        list: retorna .
+        list: retorna una lista.
     """
     lista, acumulador = [], ""
     for i in range(len(texto)):

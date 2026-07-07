@@ -167,14 +167,14 @@ def mostrar_tabla_completa(tabla: dict) -> None:
     """
     print("|", end="")
     for col in tabla['columnas']:
-        print(f" {col:^10} |", end="")
+        print(f" {col:^12} |", end="")
     print()
-    print("-" * (13 * len(tabla['columnas'])))         
+    print("-" * (15 * len(tabla['columnas'])))         
     
     for fila in tabla['matriz']:
         print("|", end="")
         for dato in fila:
-            print(f" {dato:^10} |", end="")
+            print(f" {dato:^12} |", end="")
         print()
 
 
@@ -396,20 +396,22 @@ def filtrar_columnas(tabla: dict) -> None:
         tabla (dict): tabla de datos.
     """
     columna = retornar_columna(tabla)
+    columna = transformar_dato(columna)
     valor_buscado = input("Ingrese el valor a filtrar: ")
+    valor_buscado = transformar_dato(valor_buscado)
     indice_columna = obtener_indice_columna(tabla, columna)
 
     print("|", end="")
     for col in tabla['columnas']:
-        print(f" {col:^10} |", end="")
+        print(f" {col:^12} |", end="")
     print()
-    print("-" * (13 * len(tabla['columnas'])))
+    print("-" * (16 * len(tabla['columnas'])))
 
     for fila in range(len(tabla['matriz'])):
         if str(tabla['matriz'][fila][indice_columna]) == valor_buscado:
             print("|", end="")
             for dato in tabla['matriz'][fila]:
-                print(f" {str(dato):^10} |", end="")
+                print(f" {str(dato):^12} |", end="")
             print()
 
 
@@ -433,7 +435,7 @@ def mostrar_tablas_disponibles(nombre_pr: str, proyectos: dict) -> None:
 
         print(f"Tablas disponibles: {texto_tablas}")
     else:
-        print(f"[!] El proyecto '{nombre_pr}' no contiene tablas creadas.")
+        print(f"El proyecto '{nombre_pr}' no contiene tablas creadas.")
 
 
 def mostrar_proyectos_disponibles(proyectos: dict) -> None:

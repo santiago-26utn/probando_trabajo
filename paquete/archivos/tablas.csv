@@ -22,7 +22,7 @@ Proyecto: kiosco
 Tabla: Tienda
 Producto,Cantidad,Precio
 texto,numerico,numerico
-Caramelos,300.0,10.0
+Caramelos,320.0,10.0
 Chocolate,250.0,25.0
 Bombon,115.0,20.0
 Gomitas,195.0,15.0
