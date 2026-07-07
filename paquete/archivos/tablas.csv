@@ -26,3 +26,15 @@ Caramelos,320.0,10.0
 Chocolate,250.0,25.0
 Bombon,115.0,20.0
 Gomitas,195.0,15.0
+Proyecto: veterinaria
+Tabla: Mascotas
+Nombre,Vacuna,Vacuna dos,Enfermedades,Edad,Raza
+texto,texto,texto,texto,numerico,texto
+Firulais,Si,Si,Sano,6.0,Caniche
+Roman,Si,No,Moquillo,13.0,Ovejero aleman
+Laika,No,No,Sano,10.0,Galgo
+Tabla: Empleados
+Nombre,Apellido,Edad
+texto,texto,numerico
+Pedro,Perez,34.0
+Juan,Suarez,25.0

@@ -525,10 +525,7 @@ def guardar_tablas(nombre_proyecto: str, proyectos: dict) -> None:
     print("¡Todas las tablas de todos los proyectos fueron guardadas!")
 
 
-def guardar_tabla_csv(nombre_p: str, 
-                      nom_tabla: str, 
-                      tabla: dict, 
-                      proyectos: dict) -> None:
+def guardar_tabla_csv(proyectos: dict) -> None:
     """Guarda una tabla individual cuando se hacen modificaciones.
 
     Args:
